@@ -1,42 +1,74 @@
 import React from "react"
-import { PageProps } from "gatsby"
+import { Link, graphql, PageProps } from "gatsby"
 
-import { List } from 'antd'
+import { List, Typography, Space } from 'antd'
 
-import Header from "../components/header"
+import Layout from "../components/layout"
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
+const { Title, Text } = Typography
 
-const IndexPage: React.FC<PageProps<{}>> = () => (
-  <div style={{ maxWidth: '42em', margin: '50px auto' }}>
-    <Header title="'s Blog" />
-    <List
-      itemLayout="horizontal"
-      style={{ marginTop: '50px' }}
-      dataSource={data}
-      renderItem={item => (
-        <List.Item>
-          <List.Item.Meta
-            title={<a href="https://ant.design">{item.title}</a>}
-            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-          />
-        </List.Item>
-      )}
-    />
-  </div>
-)
+type Data = {
+  allMarkdownRemark: {
+    edges: [
+      {
+        node: {
+          excerpt: string
+          frontmatter: {
+            date: string
+            slug: string
+            title: string
+            description?: string
+          }
+        }
+      }
+    ]
+  }
+}
+
+
+const IndexPage: React.FC<PageProps<Data>> = ({ data }) => {
+  return (
+    <Layout>
+      <List
+        itemLayout="horizontal"
+        dataSource={data.allMarkdownRemark.edges}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta
+              title={<Title level={4}><Link to={item.node.frontmatter.slug}>{item.node.frontmatter.title}</Link></Title>}
+              description={
+                <Space direction="vertical">
+                  <Text>{item.node.frontmatter.date}</Text>
+                  <Text>{item.node.frontmatter.description}</Text>
+                </Space>
+              }
+            />
+          </List.Item>
+        )}
+      />
+    </Layout>
+  )
+}
 
 export default IndexPage
+
+export const pageQuery = graphql`
+  query {
+    allMarkdownRemark(
+      sort: { order: DESC, fields: [frontmatter___date] }
+      limit: 1000
+    ) {
+      edges {
+        node {
+          excerpt
+          frontmatter {
+            date(formatString: "MMMM DD, YYYY")
+            title
+            slug
+            description
+          }
+        }
+      }
+    }
+  }
+`

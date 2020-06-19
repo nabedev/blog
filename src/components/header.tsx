@@ -2,10 +2,9 @@ import React from "react"
 import { PageProps, StaticQuery, graphql, Link } from "gatsby"
 
 import { Avatar, Divider, Typography, Input, Tooltip, Button, Row, Col } from 'antd'
-import { SearchOutlined, GithubOutlined, SettingOutlined, UserOutlined, PropertySafetyFilled } from '@ant-design/icons'
+import { BulbOutlined, SearchOutlined, GithubOutlined, SettingOutlined, UserOutlined, PropertySafetyFilled } from '@ant-design/icons'
 
 import FlexBox from "./flex-Box"
-import './input.less'
 
 const { Title } = Typography
 
@@ -25,7 +24,7 @@ const Header: React.FC = () => (
           <FlexBox>
             <Avatar shape="square" size={32} icon={<UserOutlined />} />
             <Link to="/">
-              <Title level={3} style={{ marginBottom: 0, marginLeft: '8px' }}>{data.site.siteMetadata.title}</Title>
+              <Title level={2} style={{ marginBottom: 0, marginLeft: '8px' }}>{data.site.siteMetadata.title}</Title>
             </Link>
           </FlexBox>
           <FlexBox>
@@ -35,7 +34,7 @@ const Header: React.FC = () => (
             />
             <Divider type="vertical" /> */}
             <Tooltip title="Turn on Darkmode">
-              <Button shape="circle" icon={<SettingOutlined />} />
+              <Button shape="circle" icon={<BulbOutlined />} />
             </Tooltip>
             <Divider type="vertical" />
             <Tooltip title="Jump github">

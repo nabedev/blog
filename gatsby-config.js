@@ -1,3 +1,5 @@
+const { getThemeVariables } = require('antd/dist/theme');
+
 module.exports = {
   siteMetadata: {
     title: `'s Blog`,
@@ -24,23 +26,30 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        // icon: ``, // This path is relative to the root of the site.
       },
     },
     {
-      resolve: 'gatsby-plugin-antd',
+      resolve: "gatsby-plugin-antd",
       options: {
-        style: true
-      }
+        style: true,
+      },
     },
     {
       resolve: `gatsby-plugin-less`,
       options: {
         javascriptEnabled: true,
-        // modifyVars: {
-        //   'primary-color': '#BADA55'
-        // }
-      }
+      //   modifyVars: getThemeVariables({
+      //                dark: true, // 开启暗黑模式
+      //                compact: true, // 开启紧凑模式
+      //              }),
+      },
+    },
+    {
+      resolve: "gatsby-plugin-antd",
+      options: {
+        style: true,
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
@@ -62,7 +71,7 @@ module.exports = {
           },
         ],
       },
-    }
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

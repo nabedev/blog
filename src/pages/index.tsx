@@ -5,6 +5,8 @@ import { List, Typography, Space } from 'antd'
 
 import Layout from "../components/layout"
 
+import "antd/dist/antd.dark.less"
+
 const { Title, Text } = Typography
 
 type Data = {
@@ -35,7 +37,7 @@ const IndexPage: React.FC<PageProps<Data>> = ({ data }) => {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              title={<Title level={4}><Link to={item.node.frontmatter.slug}>{item.node.frontmatter.title}</Link></Title>}
+              title={<Title level={3}><Link to={item.node.frontmatter.slug}>{item.node.frontmatter.title}</Link></Title>}
               description={
                 <Space direction="vertical">
                   <Text>{item.node.frontmatter.date}</Text>

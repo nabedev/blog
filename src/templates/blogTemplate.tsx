@@ -1,13 +1,11 @@
 import React, { useEffect,useState } from "react"
 import { graphql } from "gatsby"
 
-import { Anchor,Typography, Affix, Tree } from "antd"
+import { Box, Flex, Text, Heading } from "theme-ui"
 
 import Layout from "../components/layout"
 import ScrollSyncHeadingTree from "../components/anchor-sync-sidebar"
-
-const { Link } = Anchor
-const { Title, Text, Paragraph } = Typography
+import theme from "../gatsby-plugin-theme-ui/index"
 
 export default function Template({
   data, // this prop will be injected by the GraphQL query below.
@@ -35,19 +33,19 @@ export default function Template({
   //     observer.observe(document.getElementById(entry.value))
   //   })
   // })
-  // console.log('outside')
+  console.log(theme)
   return (
     <Layout>
-        <Title level={4}>{frontmatter.title}</Title>
-        <Text>{frontmatter.date}</Text>
-        <div style={{ display: 'flex', marginTop: '42px' }}>
-          <Paragraph style={{ minWidth: '100%' }}>
-            <p dangerouslySetInnerHTML={{ __html: html }} />
-          </Paragraph>
-          <Affix>
-            <ScrollSyncHeadingTree headings={headings} />
-          </Affix>
-        </div>
+      <Flex>
+      <Box pt={5} sx={{ minWidth: '100%' }}>
+        <Heading>{frontmatter.title}</Heading>
+        <Text sx={{ color: 'gray' }}>{frontmatter.date}</Text>
+        <Text dangerouslySetInnerHTML={{ __html: html }} />
+      </Box>
+      <Flex sx={{ flexDirection: 'column', minWidth: 'auto', position: 'sticky', top: 0, height: '100%'}}>
+        <ScrollSyncHeadingTree headings={headings} />
+      </Flex>
+    </Flex>
     </Layout>
   )
 }

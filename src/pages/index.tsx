@@ -1,15 +1,20 @@
 import React from "react"
 import { Link, graphql, PageProps } from "gatsby"
 
-import { List, Typography, Space } from 'antd'
+/** @jsx jsx */
+import { jsx, ThemeProvider, Styled, Text, useColorMode, Divider, Flex, Container, Box, Link as ThemeUiLink } from "theme-ui"
+import { Heading, Button } from "@theme-ui/components"
+import { FaMoon, FaSun, FaGithub } from "react-icons/fa"
 
+import theme from "../gatsby-plugin-theme-ui"
 import Layout from "../components/layout"
 
-import "antd/dist/antd.dark.less"
-
-const { Title, Text } = Typography
-
 type Data = {
+  site: {
+      siteMetadata: {
+        title: string
+      }
+    }
   allMarkdownRemark: {
     edges: [
       {
@@ -29,25 +34,21 @@ type Data = {
 
 
 const IndexPage: React.FC<PageProps<Data>> = ({ data }) => {
+  const [colorMode, setColorMode] = useColorMode()
+  console.log(theme)
   return (
     <Layout>
-      <List
-        itemLayout="horizontal"
-        dataSource={data.allMarkdownRemark.edges}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              title={<Title level={3}><Link to={item.node.frontmatter.slug}>{item.node.frontmatter.title}</Link></Title>}
-              description={
-                <Space direction="vertical">
-                  <Text>{item.node.frontmatter.date}</Text>
-                  <Text>{item.node.frontmatter.description}</Text>
-                </Space>
-              }
-            />
-          </List.Item>
-        )}
-      />
+      {data.allMarkdownRemark.edges.map(edge => (
+        <Box pt={5}>
+          <Heading>
+            <Styled.a as={Link} to={edge.node.frontmatter.slug}>
+              {edge.node.frontmatter.title}
+            </Styled.a>
+          </Heading>
+          <Text sx={{ color: 'gray', fontSize: 2 }}>{edge.node.frontmatter.date}</Text>
+          <Text sx={{ color: 'gray' }}>{edge.node.frontmatter.description}</Text>
+        </Box>
+      ))}
     </Layout>
   )
 }
@@ -56,6 +57,11 @@ export default IndexPage
 
 export const pageQuery = graphql`
   query {
+    site {
+      siteMetadata {
+        title
+      }
+    }
     allMarkdownRemark(
       sort: { order: DESC, fields: [frontmatter___date] }
       limit: 1000

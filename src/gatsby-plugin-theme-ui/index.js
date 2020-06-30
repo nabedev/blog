@@ -1,30 +1,46 @@
-import { base, dark } from '@theme-ui/presets'
+import { system, deep } from '@theme-ui/presets'
+import prism from '@theme-ui/prism/presets/theme-ui'
 
 export default {
-  ...dark,
+  ...system,
   colors: {
-    ...dark.colors,
+    ...system.colors,
     modes: {
-      light: {
-        ...base.colors,
+      dark: {
+        ...deep.colors,
       }
-    }
+    },
   },
   styles: {
-    ...dark.styles,
-    a: {
-      color: 'text',
-      textDecoration: 'none',
-      '&:hover': {
-        color: "primary",
-        cursor: "pointer",
-      }
+    ...system.styles,
+    code: {
+      ...prism,
     }
   },
   sizes: {
     container: 768
   },
-  spaces: {
-    ...dark.space
+  links: {
+    heading: {
+      color: 'text',
+      textDecoration: 'none',
+      '&:hover': {
+        color: 'primary',
+      }
+    },
+    nav: {
+      color: 'text',
+      textDecoration: 'none',
+      fontWeight: 'heading',
+      transitionDuration: '.2s',
+      borderRadius: 4,
+      px: 2,
+      '&:hover': {
+        bg: 'highlight',
+      },
+      '&.active': {
+        bg: 'highlight',
+      }
+    }
   },
 }

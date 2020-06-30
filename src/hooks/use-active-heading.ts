@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 
 
 export default function useActiveHeading (headingIds: string[]): string {
-    if (headingIds.length == 0) {
-      return
-    }
-
     const [ActiveHeading, setActiveHeading] = useState('')
   
     useEffect(() => {

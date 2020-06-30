@@ -1,52 +1,25 @@
 import React from "react"
 import { Link, graphql, PageProps } from "gatsby"
-
 /** @jsx jsx */
-import { jsx, ThemeProvider, Styled, Text, useColorMode, Divider, Flex, Container, Box, Link as ThemeUiLink } from "theme-ui"
-import { Heading, Button } from "@theme-ui/components"
-import { FaMoon, FaSun, FaGithub } from "react-icons/fa"
+import { jsx, Text, Box, Heading } from "theme-ui"
 
-import theme from "../gatsby-plugin-theme-ui"
 import Layout from "../components/layout"
-
-type Data = {
-  site: {
-      siteMetadata: {
-        title: string
-      }
-    }
-  allMarkdownRemark: {
-    edges: [
-      {
-        node: {
-          excerpt: string
-          frontmatter: {
-            date: string
-            slug: string
-            title: string
-            description?: string
-          }
-        }
-      }
-    ]
-  }
-}
+import { IndexPageQuery } from "../../types/graphql-types"
 
 
-const IndexPage: React.FC<PageProps<Data>> = ({ data }) => {
-  const [colorMode, setColorMode] = useColorMode()
-  console.log(theme)
+const IndexPage: React.FC<PageProps<IndexPageQuery>> = ({ data }) => {
+  console.log(data)
   return (
     <Layout>
-      {data.allMarkdownRemark.edges.map(edge => (
-        <Box pt={5}>
+      {data.allMdx.nodes.map(node => (
+        <Box sx={{ '&+&': { mt: 5 } }}>
           <Heading>
-            <Styled.a as={Link} to={edge.node.frontmatter.slug}>
-              {edge.node.frontmatter.title}
-            </Styled.a>
+            <Link to={node.frontmatter.path} sx={{ variant: 'links.heading' }}>
+              {node.frontmatter.title}
+            </Link>
           </Heading>
-          <Text sx={{ color: 'gray', fontSize: 2 }}>{edge.node.frontmatter.date}</Text>
-          <Text sx={{ color: 'gray' }}>{edge.node.frontmatter.description}</Text>
+          <Text sx={{ color: 'gray', fontSize: 2 }}>{node.frontmatter.date}</Text>
+          <Text sx={{ color: 'gray' }}>{node.frontmatter.description}</Text>
         </Box>
       ))}
     </Layout>
@@ -56,25 +29,14 @@ const IndexPage: React.FC<PageProps<Data>> = ({ data }) => {
 export default IndexPage
 
 export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allMarkdownRemark(
-      sort: { order: DESC, fields: [frontmatter___date] }
-      limit: 1000
-    ) {
-      edges {
-        node {
-          excerpt
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            title
-            slug
-            description
-          }
+  query IndexPage {
+    allMdx {
+      nodes {
+        frontmatter {
+          title
+          path
+          date(formatString: "MMMM DD, YYYY")
+          description
         }
       }
     }

@@ -1,20 +1,19 @@
+const remarkSlug = require('remark-slug')
+
 module.exports = {
   siteMetadata: {
-    title: `no Blog`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Blog`,
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
+    // `gatsby-plugin-react-helmet`,
+    // `gatsby-transformer-sharp`,
+    // `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-plugin-graphql-codegen',
       options: {
-        name: `images`,
-        path: `${__dirname}/src/images`,
+        fileName: `types/graphql-types.d.ts`
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -23,22 +22,25 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        plugins: [
-          {
-            resolve: `gatsby-remark-autolink-headers`,
-            options: {
-              maintainCase: true,
-              elements: [`h1`, `h2`],
-            },
-          },
-        ],
+        extensions: ['.mdx', '.md'],
+        // MEMO: I would like to extend the query and pass additional data to the defaultLayout through the context, but I'm not sure.
+        // https://github.com/gatsbyjs/gatsby/issues/16845
+        // Instead, I'm creating pages programmatically with gatsby-nodeAPI.
+        // defaultLayouts: { default: require.resolve("./src/components/blog-layout.tsx") },
+        remarkPlugins: [
+          remarkSlug,
+        ]
       },
     },
-    {
-      resolve: 'gatsby-plugin-theme-ui',
-    }
+    'gatsby-plugin-theme-ui'
+    // { resolve: 'gatsby-plugin-theme-ui',
+    //   options: {
+    //     prismPreset: 'night-owl',
+    //     preset: '@theme-ui/preset-funk'
+    //   }
+    // },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

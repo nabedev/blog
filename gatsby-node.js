@@ -14,8 +14,15 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     {
       allMdx {
         nodes {
+          headings {
+            value
+            depth
+          }
+          body
           frontmatter {
             path
+            date(formatString: "MMMM DD, YYYY")
+            title
           }
         }
       }
@@ -31,6 +38,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     createPage({
       path: node.frontmatter.path,
       component: blogLayout,
+      context: {
+        title: node.frontmatter.title,
+        date: node.frontmatter.date,
+        body: node.body,
+        headings: node.headings,
+      }
     })
   })
 }

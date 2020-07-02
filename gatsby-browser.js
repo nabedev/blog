@@ -16,9 +16,12 @@
 // const components = {
 //   code: Prism,
 // }
-
-// export const wrapRootElement = ({ element }) => (
-//   <ThemeProvider theme={theme}>
-//     <MDXProvider components={components}>{element}</MDXProvider>
-//   </ThemeProvider>
-// )
+import React from 'react'
+import Layout from "./src/components/layout"
+import { ThemeProvider } from 'theme-ui'
+import theme from "./src/gatsby-plugin-theme-ui"
+export const wrapPageElement = ({ element, props }) => (
+  <Layout {...props}>
+    {element}
+  </Layout>
+)

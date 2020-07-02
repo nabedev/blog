@@ -18,8 +18,6 @@
 // }
 import React from 'react'
 import Layout from "./src/components/layout"
-import { ThemeProvider } from 'theme-ui'
-import theme from "./src/gatsby-plugin-theme-ui"
 export const wrapPageElement = ({ element, props }) => (
   <Layout {...props}>
     {element}

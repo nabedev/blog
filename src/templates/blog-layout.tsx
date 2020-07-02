@@ -14,8 +14,7 @@ type PageContextType = {
 }
 
 const BlogLayout: React.FC<PageProps<{}, PageContextType>> = ({ pageContext }) => {
-  return <Flex>
-      <Box>
+  return <Box>
         <Heading>{pageContext.title}</Heading>
         <Text sx={{ color: 'gray' }}>{pageContext.date}</Text>
         <MDXRenderer headings={pageContext.headings}>{pageContext.body}</MDXRenderer>
@@ -29,7 +28,6 @@ const BlogLayout: React.FC<PageProps<{}, PageContextType>> = ({ pageContext }) =
           </Flex>
           } */
         }
-    </Flex>
 }
 
 export default BlogLayout

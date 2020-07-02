@@ -1,11 +1,11 @@
 import React from "react"
-
-import Layout from "../components/layout"
-
+import { Text, Heading } from "theme-ui"
+import { T } from "antd/lib/upload/utils"
 const About: React.FC = () => (
-  <Layout>
-    TBD
-  </Layout>
+  <>
+  <Text>TBD</Text>
+  <Text>ドキュメントを書く訓練, アウトプット, ポートフォリオ</Text>
+  </>
 )
 
 export default About

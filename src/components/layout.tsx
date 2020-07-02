@@ -1,8 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 /** @jsx jsx */
-import { jsx, Container, Divider, Text, ThemeProvider } from "theme-ui"
-import { MDXProvider } from '@mdx-js/react'
+import { jsx, Container, Divider, Text } from "theme-ui"
 
 import Header from "./header"
 

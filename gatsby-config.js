@@ -7,10 +7,13 @@ module.exports = {
   plugins: [
     // `gatsby-plugin-react-helmet`,
     // `gatsby-transformer-sharp`,
-    // `gatsby-plugin-sharp`,
+    `gatsby-plugin-sharp`,
     {
       resolve: 'gatsby-plugin-graphql-codegen',
       options: {
+        documentPaths: [
+          './src/**/*.{ts,tsx}',
+        ],
         fileName: `types/graphql-types.d.ts`
       },
     },
@@ -21,6 +24,7 @@ module.exports = {
         path: `${__dirname}/src/posts`,
       },
     },
+    `gatsby-remark-images`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -31,18 +35,17 @@ module.exports = {
         // defaultLayouts: { default: require.resolve("./src/components/blog-layout.tsx") },
         remarkPlugins: [
           remarkSlug,
-        ]
+        ],
+        gatsbyRemarkPlugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590,
+            },
+          },
+        ],
       },
     },
-    'gatsby-plugin-theme-ui'
-    // { resolve: 'gatsby-plugin-theme-ui',
-    //   options: {
-    //     prismPreset: 'night-owl',
-    //     preset: '@theme-ui/preset-funk'
-    //   }
-    // },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    'gatsby-plugin-theme-ui',
   ],
 }

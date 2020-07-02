@@ -13,6 +13,12 @@ export default {
   },
   styles: {
     ...system.styles,
+    h1:{
+      fontWeight: 'heading',
+    },
+    h2: {
+      fontSize: 4,
+    },
     code: {
       ...prism,
     }

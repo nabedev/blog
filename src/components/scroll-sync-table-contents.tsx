@@ -18,7 +18,7 @@ const ScrollSyncTableContents: React.FC<Props> = ({ headings }) => {
         <Link
           sx={{ variant: 'links.nav', ml: heading.depth + 2, wordBreak: 'keep-all' }}
           to={`#${heading.id}`}
-          className={activeHeading === heading.value ? 'active' : ''}
+          className={activeHeading === heading.id ? 'active' : ''}
         >
           {heading.value}
         </Link>

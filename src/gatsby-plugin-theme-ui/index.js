@@ -3,6 +3,7 @@ import prism from '@theme-ui/prism/presets/theme-ui'
 
 export default {
   ...system,
+  breakpoints: ['868px'],
   colors: {
     ...system.colors,
     modes: {
@@ -24,7 +25,7 @@ export default {
     }
   },
   sizes: {
-    container: 768
+    container: '768px'
   },
   links: {
     heading: {

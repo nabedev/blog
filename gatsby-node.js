@@ -5,6 +5,8 @@
  */
 
 // You can delete this file if you're not using it
+const GithubSlugger = require('github-slugger')
+
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions
 
@@ -34,6 +36,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     reporter.panicOnBuild(`Error while running GraphQL query.`)
     return
   }
+
+  const gs = new GithubSlugger()
+
   result.data.allMdx.nodes.forEach(node => {
     createPage({
       path: node.frontmatter.path,
@@ -42,7 +47,12 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         title: node.frontmatter.title,
         date: node.frontmatter.date,
         body: node.body,
-        headings: node.headings,
+        // MEMO: The ID of the heading created by remark-slug cannot fetch from graphql, so regenerate it.
+        // https://github.com/remarkjs/remark-slug#remarkuseslug
+        headings: node.headings.map(heading => {
+          heading['id'] = gs.slug(heading.value)
+          return heading
+        }),
       }
     })
   })

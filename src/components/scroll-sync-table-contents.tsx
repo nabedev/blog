@@ -3,24 +3,21 @@ import { Link } from "gatsby"
 /** @jsx jsx */
 import { jsx, Flex } from "theme-ui"
 import useActiveHeading from "../hooks/use-active-heading"
-
-type HeadingType = {
-  depth: number, value: string
-}
+import { HeadingType } from "../templates/blog-layout"
 
 interface Props {
   headings: HeadingType[]
 }
 
-const ScrollSyncHeadingTree: React.FC<Props> = ({ headings }) => {
-  const activeHeading = useActiveHeading(headings.map(heading => heading.value))
+const ScrollSyncTableContents: React.FC<Props> = ({ headings }) => {
+  const activeHeading = useActiveHeading(headings.map(heading => heading.id))
 
   return <React.Fragment>
     {headings.map(heading => (
       <Flex as='nav'>
         <Link
           sx={{ variant: 'links.nav', ml: heading.depth + 2, wordBreak: 'keep-all' }}
-          to={`#${heading.value}`}
+          to={`#${heading.id}`}
           className={activeHeading === heading.value ? 'active' : ''}
         >
           {heading.value}
@@ -30,4 +27,4 @@ const ScrollSyncHeadingTree: React.FC<Props> = ({ headings }) => {
     </React.Fragment>
 }
 
-export default ScrollSyncHeadingTree
+export default ScrollSyncTableContents

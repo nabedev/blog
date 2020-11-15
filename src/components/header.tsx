@@ -1,44 +1,20 @@
 import React from "react"
-import { StaticQuery, graphql, Link } from "gatsby"
 /** @jsx jsx */
-import { jsx, Flex, Box, useColorMode, Heading } from "theme-ui"
-import { FaMoon, FaSun, FaGithub } from "react-icons/fa"
-import { HeaderQuery } from "../../types/graphql-types"
+import { jsx, Flex, useColorMode } from "theme-ui"
+import { FaMoon, FaSun } from "react-icons/fa"
+import { FiToggleRight, FiToggleLeft } from "react-icons/fi"
 
-const Header: React.FC = (data) => {
+const Header: React.FC = () => {
   const [colorMode, setColorMode] = useColorMode()
 
-  return <StaticQuery
-    query={graphql`
-      query Header {
-        site {
-          siteMetadata {
-            title
-          }
-        }
-      }
-    `}
-    render={(data: HeaderQuery) => (
-      <Flex sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-        <Flex>
-          <Heading>
-            <Link to="/" sx={{ variant: 'links.heading', fontWeight: 'display', fontSize: 4 }}>
-              {data.site.siteMetadata.title}
-            </Link>
-          </Heading>
-        </Flex>
-        <Box>
-          <Flex>
-            {colorMode === 'default'
-            ? <FaMoon size={24} onClick={() => setColorMode('dark')} />
-            : <FaSun size={24} onClick={() => setColorMode('default')} />
-            }
-          <FaGithub size={24} sx={{ ml: 2 }} />
-          </Flex>
-        </Box>
-      </Flex>
-    )}
-  />
+  return <Flex sx={{ float: 'right' }}>
+    <FaSun sx={{ variant: 'buttons.icon', mr: 1 }} onClick={() => setColorMode('light')} />
+    {colorMode === 'default'
+      ? <FiToggleRight sx={{ variant: 'buttons.icon' }} onClick={() => setColorMode('light')} />
+      : <FiToggleLeft sx={{ variant: 'buttons.icon' }} onClick={() => setColorMode('default')} />
+    }
+    <FaMoon sx={{ variant: 'buttons.icon', ml: 1 }}onClick={() => setColorMode('default')} />
+  </Flex>
 }
 
 export default Header

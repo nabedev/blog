@@ -1,5 +1,6 @@
 import React from "react"
-import { Flex, Box } from "theme-ui"
+/** @jsx jsx */
+import { jsx, Flex, Box } from "theme-ui"
 
 import ScrollSyncTableContents from "./scroll-sync-table-contents"
 

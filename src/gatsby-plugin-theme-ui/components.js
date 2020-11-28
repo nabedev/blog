@@ -1,4 +1,4 @@
-import Prism from '@theme-ui/prism'
+import Prism from "@theme-ui/prism"
 
 const components = {
   pre: props => props.children,

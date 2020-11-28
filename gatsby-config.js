@@ -1,4 +1,5 @@
-const remarkSlug = require('remark-slug')
+const remarkSlug = require("remark-slug")
+const path = require("path")
 
 module.exports = {
   siteMetadata: {
@@ -6,36 +7,35 @@ module.exports = {
   },
   plugins: [
     // `gatsby-plugin-react-helmet`,
-    // `gatsby-transformer-sharp`,
+    `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
-      resolve: 'gatsby-plugin-graphql-codegen',
+      resolve: "gatsby-plugin-graphql-codegen",
       options: {
         documentPaths: [
-          './src/**/*.{ts,tsx}',
+          "./src/**/*.{ts,tsx,mdx}",
+          "./src/pages/blog/**/*.{mdx}",
         ],
-        fileName: `types/graphql-types.d.ts`
+        fileName: `types/graphql-types.d.ts`,
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `posts`,
-        path: `${__dirname}/src/posts`,
+        name: `pages`,
+        path: `${__dirname}/src/pages`,
       },
     },
     `gatsby-remark-images`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        extensions: ['.mdx', '.md'],
+        extensions: [".mdx", ".md"],
         // MEMO: I would like to extend the query and pass additional data to the defaultLayout through the context, but I'm not sure.
-        // https://github.com/gatsbyjs/gatsby/issues/16845
+        // (ref: https://github.com/gatsbyjs/gatsby/issues/16845 also https://github.com/gatsbyjs/gatsby/issues/24164)
         // Instead, I'm creating pages programmatically with gatsby-nodeAPI.
         // defaultLayouts: { default: require.resolve("./src/components/blog-layout.tsx") },
-        remarkPlugins: [
-          remarkSlug,
-        ],
+        remarkPlugins: [remarkSlug],
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
@@ -47,6 +47,6 @@ module.exports = {
         ],
       },
     },
-    'gatsby-plugin-theme-ui',
+    "gatsby-plugin-theme-ui",
   ],
 }

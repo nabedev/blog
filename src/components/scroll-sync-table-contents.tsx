@@ -3,28 +3,35 @@ import { Link } from "gatsby"
 /** @jsx jsx */
 import { jsx, Flex } from "theme-ui"
 import useActiveHeading from "../hooks/use-active-heading"
-import { HeadingType } from "../templates/blog-layout"
 
-interface Props {
-  headings: HeadingType[]
+type ItemType = {
+  url: string
+  title: string
+  items?: []
 }
 
-const ScrollSyncTableContents: React.FC<Props> = ({ headings }) => {
-  const activeHeading = useActiveHeading(headings.map(heading => heading.id))
+interface Props {
+  items: ItemType[]
+}
 
-  return <React.Fragment>
-    {headings.map(heading => (
-      <Flex as='nav'>
-        <Link
-          sx={{ variant: 'links.nav', ml: heading.depth + 2, wordBreak: 'keep-all' }}
-          to={`#${heading.id}`}
-          className={activeHeading === heading.id ? 'active' : ''}
-        >
-          {heading.value}
-        </Link>
-      </Flex>
-    ))}
-    </React.Fragment>
+const ScrollSyncTableContents: React.FC<Props> = ({ items }) => {
+  const activeHeading = useActiveHeading(items.map(item => item.url))
+
+  return (
+    <>
+      {items.map(item => (
+        <Flex as="nav" sx={{ mt: 1 }}>
+          <Link
+            sx={{ variant: "links.nav", wordBreak: "keep-all" }}
+            className={`#${activeHeading}` === item.url ? "active" : ""}
+            to={item.url}
+          >
+            {item.title}
+          </Link>
+        </Flex>
+      ))}
+    </>
+  )
 }
 
 export default ScrollSyncTableContents

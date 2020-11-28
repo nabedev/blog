@@ -1,40 +1,31 @@
 import React from "react"
-import { Link, graphql, PageProps, Page } from "gatsby"
+import { Link, PageProps } from "gatsby"
 /** @jsx jsx */
-import { jsx, Text, Box, Heading } from "theme-ui"
+import { jsx, Text, Box, Flex, Divider } from "theme-ui"
 
-import { IndexPageQuery } from "../../types/graphql-types"
-
-
-const IndexPage: React.FC<PageProps<IndexPageQuery>> = ({ data }) => (
-  <React.Fragment>
-    {data.allMdx.nodes.map(node => (
-      <Box sx={{ '&+&': { mt: 5 } }}>
-        <Heading>
-          <Link to={node.frontmatter.path} sx={{ variant: 'links.heading' }}>
-            {node.frontmatter.title}
-          </Link>
-        </Heading>
-        <Text sx={{ color: 'gray', fontSize: 2 }}>{node.frontmatter.date}</Text>
-        <Text sx={{ color: 'gray' }}>{node.frontmatter.description}</Text>
+const IndexPage: React.FC<PageProps> = () => (
+  <>
+    <Flex sx={{ alignItems: "center" }}>
+      <Box sx={{ ml: "8px" }}>
+        <Text sx={{ fontSize: 6, fontWeight: "heading" }}>Yuki</Text>
+        <Text sx={{ fontSize: 6, fontWeight: "heading" }}>Watanabe</Text>
+        <Text>Web developer</Text>
+        <Text sx={{ fontSize: 0 }}>
+          This site built with Gatsby.js and deployed Netlify.
+        </Text>
       </Box>
-    ))}
-  </React.Fragment>
+    </Flex>
+    <Divider sx={{ mt: 30, mb: 30 }} />
+    <Link to="/blog" sx={{ variant: "links.heading" }}>
+      Blog
+    </Link>
+    <Link to="/demo" sx={{ variant: "links.heading" }}>
+      Demo
+    </Link>
+    <a href="https://github.com/wtnb93" sx={{ variant: "links.heading" }}>
+      Github
+    </a>
+  </>
 )
 
 export default IndexPage
-
-export const pageQuery = graphql`
-  query IndexPage {
-    allMdx {
-      nodes {
-        frontmatter {
-          title
-          path
-          date(formatString: "MMMM DD, YYYY")
-          description
-        }
-      }
-    }
-  }
-`

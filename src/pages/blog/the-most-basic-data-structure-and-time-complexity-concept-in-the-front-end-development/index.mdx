@@ -1,11 +1,28 @@
 ---
 title: The most basic data structure and time complexity concept in the front-end development
-path: /the-most-basic-data-structure-and-time-complexity-concept-in-the-front-end-development
 date: 2020-06-27
-description: ""
 ---
 
+import { graphql } from "gatsby"
+
+import DefaultMDXLayout from "../../../components/mdx-layout"
+
+export const pageQuery = graphql`
+  query {
+    mdx(
+      slug: {
+        eq: "blog/the-most-basic-data-structure-and-time-complexity-concept-in-the-front-end-development/"
+      }
+    ) {
+      tableOfContents
+    }
+  }
+`
+
+export default DefaultMDXLayout
+
 # 概要
+
 ソフトウェア開発者にとって、アルゴリズムと計算量の概念はしばしば役に立ちます。  
 この記事では、もっとも基本的なアルゴリズムと計算量の求め方で、深さ情報を持ったノードが並んだ配列から木構造を作成するときの計算量について考えます。  
 ※筆者はジュニアエンジニアなので誤った情報の可能性が大いにあります。
@@ -14,7 +31,15 @@ description: ""
 
 ```javascript
 // In code
-input = [{ depth: 1 }, { depth: 2 }, { depth: 2 }, { depth: 1 }, { depth: 2 }, { depth: 3 }, { depth: 3 }]
+input = [
+  { depth: 1 },
+  { depth: 2 },
+  { depth: 2 },
+  { depth: 1 },
+  { depth: 2 },
+  { depth: 3 },
+  { depth: 3 },
+]
 
 expect_output = [
   {
@@ -22,11 +47,11 @@ expect_output = [
     children: [
       {
         depth: 2,
-        children: []
+        children: [],
       },
       {
         depth: 2,
-        children: []
+        children: [],
       },
     ],
   },
@@ -42,7 +67,7 @@ expect_output = [
           },
           {
             depth: 3,
-            children: []
+            children: [],
           },
         ],
       },
@@ -51,49 +76,53 @@ expect_output = [
 ]
 ```
 
-inputの配列には以下の制約があります。
-- 親ノードは常に子ノードの手前に来ます。  
+input の配列には以下の制約があります。
+
+- 親ノードは常に子ノードの手前に来ます。
 - 親は以下の条件で決まります。
   - 自身より値が小さい
   - 自身より手間に存在する
   - 自身に最も近い
 
-
 # 背景
+
 この問題が生まれた背景について書きます。このセクションは重要ではありません。  
-結論はこのブログに目次を実装するためです。  
+結論はこのブログに目次を実装するためです。
 
 ![screen](./screen.png)
 
+## input は heading タグの情報
 
-## inputはheadingタグの情報
-このBlogはGatsbyで構築しており、MarkdownファイルをHTMLに変換し記事ページを作成します。  
-HTMLへの変換時にheadingタグにidを振ります。  
-最終的に全てのheadingタグ情報を次の型で取得します。  
+この Blog は Gatsby で構築しており、Markdown ファイルを HTML に変換し記事ページを作成します。  
+HTML への変換時に heading タグに id を振ります。  
+最終的に全ての heading タグ情報を次の型で取得します。
+
 ```typescript
 { depth: number, value: string }[]
 ```
 
-## outputの階層構造はライブラリの制約
-[AntDesign](https://ant.design/components/tree/) のTreeコンポーネントを使用したくて、
+## output の階層構造はライブラリの制約
+
+[AntDesign](https://ant.design/components/tree/) の Tree コンポーネントを使用したくて、
 階層構造にする必要がありました。
 
 # ソリューション
 
 ## O(n)
+
 このソリューションがおそらく最速で簡単です。(最善とは限らないです。)  
-forループで、現在のノード(`input[i]`)と一つ前のノード(`input[i-1]`)の値を比較します。  
+for ループで、現在のノード(`input[i]`)と一つ前のノード(`input[i-1]`)の値を比較します。  
 もし一つ前のノードの値が小さければそのノードが親です。  
 逆に一つ前のノードの値が大きければ現在のノードが新たな親です。  
 そうでなければ直近親だったノードが親です。  
-このように親を更新しながら比較していけばノードの個数分のループで済むので、計算量はO(n)です。
-
+このように親を更新しながら比較していけばノードの個数分のループで済むので、計算量は O(n)です。
 
 ## O(n^2)
+
 最初に思いついたのがこのソリューションでしたが、よくありません。  
 配列の末端は必ず葉となるので、末端から先端へと各ノードの親を探そうと考えました。  
 つまり、あるノードから先端までの配列に親がいるか線形探索、という操作をノード分繰り返します。
-O(n)の処理をn回行うので、計算量はO(n^2)です。
+O(n)の処理を n 回行うので、計算量は O(n^2)です。
 
 ```javascript
 // In code
@@ -112,25 +141,27 @@ for (let i = input.lenght - 1; i >= 0; i--) {
 ```
 
 ### O(n^2)になる理由
-もしO記法による計算量について馴染みが薄い場合、このアルゴリズムはO(n^2)よりも小さく、nの定数倍のように思えるかもしれません。(私がそうでした。)  
-ループが回るごとに親を探すステップは減っていくためです。  
-なので実際にこのアルゴリズムのステップ数を求めてみます。  
 
-i = 7 のとき 6回  
-i = 6 のとき 5回  
-i = 5 のとき 4回  
+もし O 記法による計算量について馴染みが薄い場合、このアルゴリズムは O(n^2)よりも小さく、n の定数倍のように思えるかもしれません。(私がそうでした。)  
+ループが回るごとに親を探すステップは減っていくためです。  
+なので実際にこのアルゴリズムのステップ数を求めてみます。
+
+i = 7 のとき 6 回  
+i = 6 のとき 5 回  
+i = 5 のとき 4 回
 
 ...
 
-i = n のとき n - 1回  
-i = n - (n - 1) のとき 1回  
-i = n のとき 0回  
+i = n のとき n - 1 回  
+i = n - (n - 1) のとき 1 回  
+i = n のとき 0 回
 
 初項 n-1，公差 -1，項数 n の初項から第 n 項までの和を求めればよいです。  
-(公式をggり)合計で(1/2)n^2 - (1/2)n回と求まります。  
-最高次以外と係数はオーダーの違いに比べ影響が少ないため無視できるので、O(n^2)のアルゴリズムとなります。  
+(公式を gg り)合計で(1/2)n^2 - (1/2)n 回と求まります。  
+最高次以外と係数はオーダーの違いに比べ影響が少ないため無視できるので、O(n^2)のアルゴリズムとなります。
 
 # コメント
+
 コードを書く時、読みやすさはよく意識すると思います。  
 データ構造や計算量の概念があれば自分の書いたコードを評価する基準が増えますし、  
 別の解法を思いつきやすくなるのでは無いでしょうか。  
@@ -138,8 +169,9 @@ i = n のとき 0回
 今回の場合では簡潔で読みやすいコードを選択するべきだと思います。
 
 # 参考
+
 - [データ構造とアルゴリズム](https://www.amazon.co.jp/dp/4901683497)
 - [Introduction to Big O Notation and Time Complexity (Data Structures & Algorithms #7)
-](https://www.youtube.com/watch?v=D6xkbGLQesk)
+  ](https://www.youtube.com/watch?v=D6xkbGLQesk)
 - [If Programming Was An Anime
-](https://www.youtube.com/watch?v=pKO9UjSeLew)
+  ](https://www.youtube.com/watch?v=pKO9UjSeLew)

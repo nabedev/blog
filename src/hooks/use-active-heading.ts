@@ -4,7 +4,7 @@ export default function useActiveHeading(urls: string[]): string {
   const [ActiveHeading, setActiveHeading] = useState("")
 
   useEffect(() => {
-    const callback = entries => {
+    const callback: IntersectionObserverCallback = entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           setActiveHeading(entry.target.id)
@@ -21,7 +21,9 @@ export default function useActiveHeading(urls: string[]): string {
     urls.forEach(url => {
       observer.observe(document.querySelector(url))
     })
-  })
+
+    return observer.disconnect
+  }, [])
 
   return ActiveHeading
 }

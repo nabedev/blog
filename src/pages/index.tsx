@@ -7,20 +7,17 @@ const IndexPage: React.FC<PageProps> = () => (
   <>
     <Flex sx={{ alignItems: "center" }}>
       <Box sx={{ ml: "8px" }}>
-        <Text sx={{ fontSize: 6, fontWeight: "heading" }}>Yuki</Text>
-        <Text sx={{ fontSize: 6, fontWeight: "heading" }}>Watanabe</Text>
-        <Text>Web developer</Text>
-        <Text sx={{ fontSize: 0 }}>
-          This site built with Gatsby.js and deployed Netlify.
+        <Text sx={{ fontSize: 6, fontWeight: "heading" }}>Hello👋</Text>
+        <Text sx={{ fontSize: 6, fontWeight: "heading" }}>
+          I'm Yuki Watanabe
         </Text>
+        <Text>Web developer, lives in Japan🇯🇵</Text>
+        <Text>This site built with Gatsby.js and deployed to Netlify.</Text>
       </Box>
     </Flex>
     <Divider sx={{ mt: 30, mb: 30 }} />
     <Link to="/blog" sx={{ variant: "links.heading" }}>
       Blog
-    </Link>
-    <Link to="/demo" sx={{ variant: "links.heading" }}>
-      Demo
     </Link>
     <a href="https://github.com/wtnb93" sx={{ variant: "links.heading" }}>
       Github

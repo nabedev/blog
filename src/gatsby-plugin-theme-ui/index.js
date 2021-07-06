@@ -54,6 +54,16 @@ export default {
         bg: "highlight",
       },
     },
+    icon: {
+      color: "text",
+      textDecoration: "none",
+      "&:hover": {
+        color: "primary",
+      },
+      "&+&": {
+        ml: "14px",
+      },
+    },
   },
   buttons: {
     icon: {

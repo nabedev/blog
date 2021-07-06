@@ -22,7 +22,7 @@ export default function useActiveHeading(urls: string[]): string {
       observer.observe(document.querySelector(url))
     })
 
-    return observer.disconnect
+    return () => observer.disconnect
   }, [])
 
   return ActiveHeading

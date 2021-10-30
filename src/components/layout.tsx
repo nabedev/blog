@@ -1,14 +1,30 @@
-import React from "react"
-/** @jsx jsx */
-import { jsx, Container } from "theme-ui"
+import React, { useState } from "react"
+import {Provider, defaultTheme, View, Flex, Button} from '@adobe/react-spectrum';
 
-import Header from "./header"
+import Header from './header'
 
-const Layout: React.FC = ({ location, children }) => (
-  <Container sx={{ mt: 5, pl: 2, pr: 2, pb: 2 }}>
-    <Header pathname={location.pathname} />
-    <main sx={{ pt: 5 }}>{children}</main>
-  </Container>
-)
+const Layout: React.FC = ({ location, children }) => {
+  const OSColorMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  const [colorMode, setColorMode] = useState(OSColorMode);
+
+  const handleToggleColorMode = () => { setColorMode(colorMode === 'light' ? 'dark' : 'light') }
+
+  return (
+  <Provider theme={defaultTheme} colorScheme={colorMode} height="100vh">
+    <View padding="size-800">
+      <Flex
+        direction="column"
+        maxWidth="768px"
+        margin="auto"
+      >
+        <Header handleToggleColorMode={handleToggleColorMode} colorMode={colorMode} />
+        <View marginTop="size-800">
+        {children}
+        </View>
+      </Flex>
+    </View>
+  </Provider>
+  )
+}
 
 export default Layout

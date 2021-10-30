@@ -1,44 +1,16 @@
 import React from "react"
 import { Link, Page } from "gatsby"
-/** @jsx jsx */
-import { jsx, Flex, useColorMode, Text } from "theme-ui"
-import { FaMoon, FaSun } from "react-icons/fa"
-import { FiToggleRight, FiToggleLeft, FiChevronsLeft } from "react-icons/fi"
+import {Provider, defaultTheme, View, Flex, Button, ActionButton} from '@adobe/react-spectrum';
+import Moon from '@spectrum-icons/workflow/Moon';
+import Light from '@spectrum-icons/workflow/Light';
 
-const Header: React.FC<{ pathname: string }> = ({ pathname }) => {
-  const [colorMode, setColorMode] = useColorMode()
+const Header: React.FC = ({ handleToggleColorMode, colorMode }) => {
 
   return (
-    <Flex sx={{ justifyContent: "space-between" }}>
-      {pathname !== "/" && (
-        <Link to="/" sx={{ variant: "links.icon" }}>
-          <Flex sx={{ alignItems: "center" }}>
-            <FiChevronsLeft sx={{ variant: "buttons.icon", mr: 1 }} />
-            Back to top page
-          </Flex>
-        </Link>
-      )}
-      <Flex sx={{ ml: "auto" }}>
-        <FaSun
-          sx={{ variant: "buttons.icon", mr: 1 }}
-          onClick={() => setColorMode("light")}
-        />
-        {colorMode === "default" ? (
-          <FiToggleRight
-            sx={{ variant: "buttons.icon" }}
-            onClick={() => setColorMode("light")}
-          />
-        ) : (
-          <FiToggleLeft
-            sx={{ variant: "buttons.icon" }}
-            onClick={() => setColorMode("default")}
-          />
-        )}
-        <FaMoon
-          sx={{ variant: "buttons.icon", ml: 1 }}
-          onClick={() => setColorMode("default")}
-        />
-      </Flex>
+    <Flex justifyContent="flex-end" width="100%">
+      <ActionButton isQuiet onPress={handleToggleColorMode}>
+        {colorMode === 'light' ? <Moon /> : <Light />}
+    </ActionButton>
     </Flex>
   )
 }

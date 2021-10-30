@@ -2,24 +2,23 @@ import React from "react"
 import { Link, graphql, PageProps, Page } from "gatsby"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 
-/** @jsx jsx */
-import { jsx, Text, Box, Heading } from "theme-ui"
+import { Heading, Text, View, Flex, Link as SpectrumLink } from '@adobe/react-spectrum'
 
-import { BlogIndexQuery } from "../../../types/graphql-types"
-
-const BlogIndex: React.FC<PageProps<BlogIndexQuery>> = ({ data }) => (
-  <>
+const BlogIndex: React.FC<PageProps> = ({ data }) => (
+  <Flex direction="column" gap="size-150">
     {data.allMdx.nodes.map(node => (
-      <Box sx={{ "&+&": { mt: 5 } }} key={node.id}>
+      <View key={node.id}>
         <Heading>
-          <Link to={`/blog/${node.slug}`} sx={{ variant: "links.heading" }}>
+          <Link to={`/blog/${node.slug}`}>
+            <SpectrumLink>
             {node.frontmatter.title}
+            </SpectrumLink>
           </Link>
         </Heading>
-        <Text sx={{ color: "gray", fontSize: 2 }}>{node.frontmatter.date}</Text>
-      </Box>
+        <Text >{node.frontmatter.date}</Text>
+      </View>
     ))}
-  </>
+  </Flex>
 )
 
 export default BlogIndex

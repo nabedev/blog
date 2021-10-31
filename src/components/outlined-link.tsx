@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, PageProps } from "gatsby"
 
-import { Header, Text, View, Flex } from '@adobe/react-spectrum'
+import { Heading, Text, View, Flex } from '@adobe/react-spectrum'
 import {useHover} from '@react-aria/interactions'
 
 
@@ -26,12 +26,12 @@ const OutlinedLink: React.FC = ({ to, icon, heading, text }) => {
     <Flex alignItems="center" justifyContent="space-between" gap="size-150">
       {icon}
       <View>
-        <Header>{heading}</Header>
+        <Heading level={4} margin={0}>{heading}</Heading>
         <Text>{text}</Text>
       </View>
     </Flex>
   </View>
-</Link>
+  </Link>
 </div>
   )
 }

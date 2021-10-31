@@ -2,6 +2,6 @@ body {
   margin: 0;
 }
 a {
-  color: initial;
-  text-decoration: initial;
+  color: inherit;
+  text-decoration: inherit;
 }

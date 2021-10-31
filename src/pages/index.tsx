@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, PageProps } from "gatsby"
 
-import { Heading, Text, Flex } from '@adobe/react-spectrum'
+import { Heading, Text, Flex, View } from '@adobe/react-spectrum'
 
 import { SiGithub } from 'react-icons/si'
 import Hammer from '@spectrum-icons/workflow/Hammer';
@@ -16,9 +16,9 @@ const IndexPage: React.FC<PageProps> = () => (
     <Text>This site built with Gatsby.js and deployed to Netlify.</Text>
 
     <Flex gap="size-150" marginTop="size-250">
-      <OutlinedLink to="/blog" icon={<Document aria-label="document" />} heading="Blog" text="my blog" />
-      <OutlinedLink to="/products" icon={<Hammer aria-label="box" />} heading="Products" text="personal products" />
-      <OutlinedLink to="https://github.com/wtnb93" icon={<SiGithub size={24}/>} heading="Github" text="github" />
+      <OutlinedLink to="/blog" icon={<Document aria-label="document" />} heading="Blog" text="個人ブログ" />
+      <OutlinedLink to="/products" icon={<Hammer aria-label="box" />} heading="Products" text="趣味で作ったプロダクトの紹介" />
+      <OutlinedLink to="https://github.com/wtnb93" icon={<SiGithub size={24}/>} heading="Github" text="Github" />
     </Flex>
   </Flex>
 )

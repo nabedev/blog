@@ -1,11 +1,54 @@
 import React from "react"
 import { Link, graphql, PageProps, Page } from "gatsby"
+import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 
-import { Heading, Text, View, Flex, Link as SpectrumLink } from '@adobe/react-spectrum'
+import { Header, Heading, Text, View, Flex, Divider, Link as SpectrumLink } from '@adobe/react-spectrum'
 
-const ProductsIndex: React.FC<PageProps> = ({ data }) => (
-  <Text>hoge</Text>
+
+const CustomH1 = ({ children }) => (
+  <>
+    <Heading level={2} marginBottom="size-50">
+      {children}
+    </Heading>
+    <Divider />
+  </>
 )
 
-export default ProductsIndex
+const components = {
+  h1: CustomH1
+}
+
+const Products: React.FC<PageProps> = ({ data }) => (
+  <Flex direction="column" gap="size-150">
+    {data.allMdx.nodes.map(node => (
+      <View key={node.id}>
+        <MDXProvider components={components}>
+          <MDXRenderer>
+            {node.body}
+          </MDXRenderer>
+        </MDXProvider>
+      </View>
+    ))}
+  </Flex>
+)
+
+export default Products
+
+export const pageQuery = graphql`
+  query ProductQuery{
+    allMdx(
+      filter: {fileAbsolutePath: {regex: "/products/"}}
+      sort: { fields: frontmatter___date, order: DESC }
+    ) {
+      nodes {
+        id
+        body
+        frontmatter {
+          title
+          date(formatString: "MMMM DD, YYYY")
+        }
+      }
+    }
+  }
+`

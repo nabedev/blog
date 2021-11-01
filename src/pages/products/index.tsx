@@ -2,7 +2,6 @@ import React from "react"
 import { Link, graphql, PageProps, Page } from "gatsby"
 import { Header, Content, Heading, Text, View, Flex, Divider, Image, Link as SpectrumLink } from '@adobe/react-spectrum'
 
-
 const Products: React.FC<PageProps> = ({ data }) => (
   <Flex direction="column" gap="size-2000">
     {data.allProductsYaml.nodes.map(node => (

@@ -3,7 +3,7 @@
     sku: CH465517080
     createdAt: 2020-10-01
   name: Hisotry Search
-  description: Slide-able screen tablet/phone usable wherever you go. Also really durable
+  description: Chromeの履歴検索を強化する拡張機能。
   repository: https://github.com/wtnb93/enhance-chrome-history-search
   demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
 - meta:
@@ -11,13 +11,13 @@
     sku: SV4680468050
     createdAt: 2020-10-02
   name: Flickr Bundle Downloader
-  description: Digestible smart electronics that can transmitt some kind of experience or meditation to one's head
+  description: Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
   repository: https://github.com/wtnb93/flickr-bundle-downloader
-  demo: ./enhance-chrome-history-demo.gif
+  demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
 - meta:
     createdAt: 2020-10-02
   name: Holdem Adviser
-  description: Digestible smart electronics that can transmitt some kind of experience or meditation to one's head
+  description: テキサスホールデムの基礎を学ぶゲーム。
   repository: https://github.com/wtnb93/flickr-bundle-downloader
   demo: https://github.com/wtnb93/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
 

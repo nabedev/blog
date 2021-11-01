@@ -1,23 +1,15 @@
-- meta:
-    id: 1
-    sku: CH465517080
-    createdAt: 2020-10-01
-  name: Hisotry Search
+- name: Flickr Bundle Downloader
+  description: Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
+  repository: https://github.com/wtnb93/flickr-bundle-downloader
+  demo: ""
+
+- name: Hisotry Search
   description: Chromeの履歴検索を強化する拡張機能。
   repository: https://github.com/wtnb93/enhance-chrome-history-search
   demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
-- meta:
-    id: 2
-    sku: SV4680468050
-    createdAt: 2020-10-02
-  name: Flickr Bundle Downloader
-  description: Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
-  repository: https://github.com/wtnb93/flickr-bundle-downloader
-  demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
-- meta:
-    createdAt: 2020-10-02
-  name: Holdem Adviser
+
+- name: Holdem Adviser
   description: テキサスホールデムの基礎を学ぶゲーム。
-  repository: https://github.com/wtnb93/flickr-bundle-downloader
+  repository: https://github.com/wtnb93/HoldemAdviser
   demo: https://github.com/wtnb93/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
 

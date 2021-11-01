@@ -1,0 +1,23 @@
+- meta:
+    id: 1
+    sku: CH465517080
+    createdAt: 2020-10-01
+  name: Hisotry Search
+  description: Slide-able screen tablet/phone usable wherever you go. Also really durable
+  repository: https://github.com/wtnb93/enhance-chrome-history-search
+  demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
+- meta:
+    id: 2
+    sku: SV4680468050
+    createdAt: 2020-10-02
+  name: Flickr Bundle Downloader
+  description: Digestible smart electronics that can transmitt some kind of experience or meditation to one's head
+  repository: https://github.com/wtnb93/flickr-bundle-downloader
+  demo: ./enhance-chrome-history-demo.gif
+- meta:
+    createdAt: 2020-10-02
+  name: Holdem Adviser
+  description: Digestible smart electronics that can transmitt some kind of experience or meditation to one's head
+  repository: https://github.com/wtnb93/flickr-bundle-downloader
+  demo: https://github.com/wtnb93/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
+

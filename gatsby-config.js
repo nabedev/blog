@@ -3,17 +3,16 @@ module.exports = {
     title: `Blog`,
   },
   plugins: [
-    `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
+    `gatsby-transformer-yaml`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        plugins: [`gatsby-remark-images`],
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 800,
+              maxWidth: 768,
             },
           },
         ],

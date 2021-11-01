@@ -10,20 +10,20 @@ const Layout: React.FC = ({ location, children }) => {
   const handleToggleColorMode = () => { setColorMode(colorMode === 'light' ? 'dark' : 'light') }
 
   return (
-  <Provider theme={defaultTheme} colorScheme={colorMode} height="100vh">
-    <View padding="size-800">
-      <Flex
-        direction="column"
-        maxWidth="768px"
-        margin="auto"
-      >
-        <Header handleToggleColorMode={handleToggleColorMode} colorMode={colorMode} />
-        <View marginTop="size-800">
-        {children}
+    <Provider theme={defaultTheme} colorScheme={colorMode}>
+        <View
+          maxWidth="768px"
+          margin="auto"
+          minHeight="100vh"
+          padding="size-400"
+          UNSAFE_style={{boxSizing: 'border-box'}}
+        >
+          <Header handleToggleColorMode={handleToggleColorMode} colorMode={colorMode} />
+          <View marginTop="size-800">
+            {children}
+          </View>
         </View>
-      </Flex>
-    </View>
-  </Provider>
+    </Provider>
   )
 }
 

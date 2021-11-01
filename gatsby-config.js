@@ -3,6 +3,7 @@ module.exports = {
     title: `Blog`,
   },
   plugins: [
+    `gatsby-plugin-layout`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-yaml`,
     {

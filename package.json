@@ -12,6 +12,7 @@
     "@spectrum-icons/workflow": "^3.2.1",
     "gatsby": "^4.0.2",
     "gatsby-plugin-image": "^2.0.0",
+    "gatsby-plugin-layout": "^3.0.0",
     "gatsby-plugin-mdx": "^3.0.0",
     "gatsby-plugin-sharp": "^4.0.1",
     "gatsby-remark-copy-linked-files": "^5.0.0",

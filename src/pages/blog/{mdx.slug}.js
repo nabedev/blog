@@ -1,13 +1,14 @@
 import React from "react"
 import { Link, graphql, PageProps, Page } from "gatsby"
+import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-
-import Layout from '../../components/layout'
 
 const BlogPost = ({ data }) => (
   <>
     <p>{data.mdx.frontmatter.date}</p>
-    <MDXRenderer>{data.mdx.body}</MDXRenderer>
+    <MDXProvider>
+      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+    </MDXProvider>
   </>
 )
 

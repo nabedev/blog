@@ -30,7 +30,6 @@ export default BlogIndex
 export const pageQuery = graphql`
   query BlogIndex {
     allMdx(
-      filter: { fileAbsolutePath: { regex: "/blog/blog/" } }
       sort: { fields: frontmatter___date, order: DESC }
     ) {
       nodes {

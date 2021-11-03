@@ -1,0 +1,73 @@
+---
+title: Gatby develop と build の落とし穴
+date: 2021-10-31
+---
+
+Gatsbyでサイトを構築していて、開発サーバーとプロダクションビルドでの挙動の違いに悩まされました。
+具体的には [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) のような画面のちらつき、またはレイアウトの崩れが初期表示時に起きるというものです。
+原因は SSR と Hydration によるものでした。調べたことを自分なりにまとめてみます。
+([こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#server-side-rendering-101) の記事がよくまとめられています。)
+
+## 再現
+今回僕が使用している react-spectrumライブラリの[サンプルリポジトリ](https://github.com/devongovett/rsp-gatsby)をclone
+yarn build && serve
+
+TBD [Video]
+
+
+## 環境
+
+```shell
+npx gatsby info
+
+  System:
+    OS: Linux 5.4 Debian GNU/Linux 10 (buster) 10 (buster)
+    CPU: (8) arm64 unknown
+    Shell: 5.7.1 - /usr/bin/zsh
+  Binaries:
+    Node: 16.10.0 - ~/.anyenv/envs/nodenv/versions/16.10.0/bin/node
+    Yarn: 1.22.11 - ~/.anyenv/envs/nodenv/versions/16.10.0/bin/yarn
+    npm: 7.24.1 - ~/.anyenv/envs/nodenv/versions/16.10.0/bin/npm
+  Browsers:
+    Firefox: 78.15.0esr
+  npmPackages:
+    gatsby: ^4.0.2 => 4.0.2
+    gatsby-plugin-image: ^2.0.0 => 2.0.0
+    gatsby-plugin-layout: ^3.0.0 => 3.0.0
+    gatsby-plugin-mdx: ^3.0.0 => 3.0.0
+    gatsby-plugin-sharp: ^4.0.1 => 4.0.1
+    gatsby-remark-copy-linked-files: ^5.0.0 => 5.0.0
+    gatsby-remark-images: ^6.0.0 => 6.0.0
+    gatsby-source-filesystem: ^4.0.0 => 4.0.0
+    gatsby-transformer-yaml: ^4.0.0 => 4.0.0
+```
+
+## 本題
+gatsbyのビルドプロセスはの違いは[ドキュメント](https://www.gatsbyjs.com/docs/conceptual/overview-of-the-gatsby-build-process/#understanding-gatsby-develop-runtime) の通りです。
+ざっくり言うと `gatsby build` では全てのページの静的HTMLを SSR(SSG) し、[Hydration](https://www.gatsbyjs.com/docs/conceptual/react-hydration/) を通してクライアントサイドにReactアプリを引き継ぎますが、
+`gatsby develop` では SSR しませんので全てのレンダリングがクライアントサイドで行われます。
+これは SSR 全般に言えることだと思いますが、レンダリングを行うのはサーバーサイド(この場合Node.js環境)なのでレンダリング時にクライアントの情報は分かりません。(windowオブジェクトやCSS MediaQuery等。["シュレディンガーのユーザー"](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#schrodingers-user) )
+
+`window` や デバイス情報に依存したコードが含まれている場合、SSRされたHTMLは完全ではないので `two-pass` レンダーによって完了します。
+> Gatsby does a two-pass render for HTML. It loops through your pages first rendering only the body and then takes the result body HTML string and passes it as the body prop to your html.js to complete the render.
+> source: https://ja.reactjs.org/docs/react-dom.html#hydrate
+
+これがちらつきの原因となり得ます。
+開発サーバーでは全てのレンダリングをクライアントサイドで行うので問題は起きなかったという訳です。
+
+今回僕はAdobeのデザインシステムであるSpectrumの `React Spectrum` を使用していて、
+Themingとかは全てお任せしていたわけですが、Spectrumのカラーテーマは [`preferes-color-scheme` メディアクエリに従います。](https://react-spectrum.adobe.com/react-spectrum/theming.html#color-schemes)
+当然SSR時は検出できませんので、[設定は遅延されます。](https://react-spectrum.adobe.com/react-spectrum/ssr.html#ssr-provider)
+結果、ダークモードが設定されたOSでリクエストした場合、SSRで生成された明るいテーマのHTMが表示されたあとに、darkテーマで再レンダーされる最悪の表示になっていました。
+
+## 解決策
+分かりません。
+とりあえず [こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#the-solution) の通り
+マウントされる前は何も render しないことで解決しましたが、これではSSRの恩恵がほぼ無いような・・・
+
+`prefers-color-scheme`クエリでOSのカラーモード設定に従うのは良いプラクティスだと思うのですが、SSRとはトレードオフなんですかね?
+
+developモードでもSSRするようなフラグが追加されている？みたいです。
+https://github.com/gatsbyjs/gatsby/discussions/28138
+
+間違っていたらごめんなさい。

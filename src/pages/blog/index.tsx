@@ -29,9 +29,7 @@ export default BlogIndex
 
 export const pageQuery = graphql`
   query BlogIndex {
-    allMdx(
-      sort: { fields: frontmatter___date, order: DESC }
-    ) {
+    allMdx(sort: { fields: frontmatter___date, order: DESC }) {
       nodes {
         id
         slug

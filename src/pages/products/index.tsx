@@ -33,7 +33,10 @@ const Products: React.FC<PageProps> = ({ data }) => (
             </SpectrumLink>
           </Content>
           <View padding="size-150" backgroundColor="gray-200" flex={1}>
-            <Image src={node.demo} alt="demo" />
+            {node.type === 'video'
+              ? <video width="100%" controls src="https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov" />
+              : <Image src={node.demo} alt="demo" />
+            }
           </View>
         </Flex>
       </View>
@@ -52,6 +55,7 @@ export const pageQuery = graphql`
         description
         id
         demo
+        type
       }
     }
   }

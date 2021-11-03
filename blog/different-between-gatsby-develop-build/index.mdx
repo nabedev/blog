@@ -3,17 +3,17 @@ title: Gatby develop と build の落とし穴
 date: 2021-10-31
 ---
 
+import flashing from './flashing.mp4'
+
 Gatsbyでサイトを構築していて、開発サーバーとプロダクションビルドでの挙動の違いに悩まされました。
 具体的には [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) のような画面のちらつき、またはレイアウトの崩れが初期表示時に起きるというものです。
 原因は SSR と Hydration によるものでした。調べたことを自分なりにまとめてみます。
 ([こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#server-side-rendering-101) の記事がよくまとめられています。)
 
 ## 再現
-今回僕が使用している react-spectrumライブラリの[サンプルリポジトリ](https://github.com/devongovett/rsp-gatsby)をclone
-yarn build && serve
-
-TBD [Video]
-
+React Spectrumを使用したGatsbyサイトの[example](https://github.com/devongovett/rsp-gatsby)をcloneして yarn build && serve  
+こんな感じです。
+<video width="100%" controls src={flashing} />
 
 ## 環境
 

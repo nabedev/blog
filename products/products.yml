@@ -1,7 +1,8 @@
 - name: Flickr Bundle Downloader
   description: Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
   repository: https://github.com/wtnb93/flickr-bundle-downloader
-  demo: ""
+  demo: https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov
+  type: "video"
 
 - name: Hisotry Search
   description: Chromeの履歴検索を強化する拡張機能。

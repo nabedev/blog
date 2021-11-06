@@ -11,13 +11,13 @@ Gatsbyでサイトを構築していて、開発サーバーとプロダクシ�
 ([こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#server-side-rendering-101) の記事がよくまとめられています。)
 
 ## 再現
-React Spectrumを使用したGatsbyサイトの[example](https://github.com/devongovett/rsp-gatsby)をcloneして yarn build && serve  
-こんな感じです。
+[example](https://github.com/devongovett/rsp-gatsby)をcloneして yarn build && serve  
+こんな感じです
 <video width="100%" controls src={flashing} />
 
 ## 環境
 
-```shell
+```zsh
 npx gatsby info
 
   System:
@@ -65,9 +65,8 @@ Themingとかは全てお任せしていたわけですが、Spectrumのカラ�
 とりあえず [こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#the-solution) の通り
 マウントされる前は何も render しないことで解決しましたが、これではSSRの恩恵がほぼ無いような・・・
 
-`prefers-color-scheme`クエリでOSのカラーモード設定に従うのは良いプラクティスだと思うのですが、SSRとはトレードオフなんですかね?
+`prefers-color-scheme`クエリでOSのカラーモード設定に従うのは良いプラクティスだと思うのですが、SSRとはトレードオフということですかね。
+(レスポンシブのちらつき等も)
 
 developモードでもSSRするようなフラグが追加されている？みたいです。
 https://github.com/gatsbyjs/gatsby/discussions/28138
-
-間違っていたらごめんなさい。

@@ -3501,6 +3501,11 @@
     escape-string-regexp "^2.0.0"
     lodash.deburr "^4.1.0"
 
+"@spectrum-css/typography@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/typography/-/typography-4.0.1.tgz#a0aea8f823f64a8b87a5cea1f3c316ac7e1862c0"
+  integrity sha512-Dj9e+waF6/W+zHfkyM9N7JK0vwnvduXTDTb5WazLrNfDLwha2oyS1RGpgZbgMIuAvYK4jdKwEE/KGhkby3QddA==
+
 "@spectrum-icons/ui@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@spectrum-icons/ui/-/ui-3.2.1.tgz#9ffbb9f0144f446999fde2434a4c38896a0e9dc6"
@@ -11329,6 +11334,11 @@ pretty-format@^25.5.0:
     ansi-regex "^5.0.0"
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
+
+prism-react-renderer@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.2.1.tgz#392460acf63540960e5e3caa699d851264e99b89"
+  integrity sha512-w23ch4f75V1Tnz8DajsYKvY5lF7H1+WvzvLUcF0paFxkTHSp42RS0H5CttdN2Q8RR3DRGZ9v5xD/h3n8C8kGmg==
 
 probe-image-size@^6.0.0:
   version "6.0.0"

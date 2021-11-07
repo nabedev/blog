@@ -3,14 +3,17 @@
   repository: https://github.com/wtnb93/flickr-bundle-downloader
   demo: https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov
   type: "video"
+  tags: ["webcomponents", "lit", "redux", "rollup"]
 
 - name: Hisotry Search
   description: Chromeの履歴検索を強化する拡張機能。
   repository: https://github.com/wtnb93/enhance-chrome-history-search
   demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
+  tags: ["react", "typescript", "parcel"]
 
 - name: Holdem Adviser
   description: テキサスホールデムの基礎を学ぶゲーム。
   repository: https://github.com/wtnb93/HoldemAdviser
   demo: https://github.com/wtnb93/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
+  tags: ["javascript"]
 

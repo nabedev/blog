@@ -10,6 +10,8 @@ import {
   Divider,
   Image,
   Link as SpectrumLink,
+  Button,
+  ActionButton,
 } from "@adobe/react-spectrum"
 
 const Products: React.FC<PageProps> = ({ data }) => (
@@ -20,25 +22,40 @@ const Products: React.FC<PageProps> = ({ data }) => (
           {node.name}
         </Heading>
         <Divider />
-        <Flex
-          direction={{ base: "column", S: "row" }}
-          justifyContent="space-between"
-          gap="size-150"
+        <Flex gap="size-50" marginTop="size-150" wrap>
+          {node.tags.map(tag => (
+            <ActionButton variant="secondary">{tag}</ActionButton>
+          ))}
+        </Flex>
+        <View
+          padding="size-150"
+          backgroundColor="gray-200"
           marginTop="size-150"
         >
-          <Content flex={1}>
-            <Text>{node.description}</Text>
-            <SpectrumLink>
-              <Link to={node.repository}>repo</Link>
-            </SpectrumLink>
-          </Content>
-          <View padding="size-150" backgroundColor="gray-200" flex={1}>
-            {node.type === 'video'
-              ? <video width="100%" controls src="https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov" />
-              : <Image src={node.demo} alt="demo" />
-            }
-          </View>
-        </Flex>
+          <Flex
+            direction={{ base: "column", S: "row" }}
+            justifyContent="space-between"
+            gap="size-150"
+          >
+            <Content flex={1}>
+              <Text>{node.description}</Text>
+              <SpectrumLink>
+                <Link to={node.repository}>repo</Link>
+              </SpectrumLink>
+            </Content>
+            <View flex={1}>
+              {node.type === "video" ? (
+                <video
+                  width="100%"
+                  controls
+                  src="https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov"
+                />
+              ) : (
+                <Image src={node.demo} alt="demo" />
+              )}
+            </View>
+          </Flex>
+        </View>
       </View>
     ))}
   </Flex>
@@ -56,6 +73,7 @@ export const pageQuery = graphql`
         id
         demo
         type
+        tags
       }
     }
   }

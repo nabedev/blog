@@ -1,13 +1,5 @@
 import React from "react"
-import { Link, Page } from "gatsby"
-import {
-  Provider,
-  defaultTheme,
-  View,
-  Flex,
-  Button,
-  ActionButton,
-} from "@adobe/react-spectrum"
+import { Flex, ActionButton } from "@adobe/react-spectrum"
 import Moon from "@spectrum-icons/workflow/Moon"
 import Light from "@spectrum-icons/workflow/Light"
 

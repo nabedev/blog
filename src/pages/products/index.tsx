@@ -1,7 +1,6 @@
 import React from "react"
-import { Link, graphql, PageProps, Page } from "gatsby"
+import { Link, graphql } from "gatsby"
 import {
-  Header,
   Content,
   Heading,
   Text,
@@ -10,11 +9,10 @@ import {
   Divider,
   Image,
   Link as SpectrumLink,
-  Button,
   ActionButton,
 } from "@adobe/react-spectrum"
 
-const Products: React.FC<PageProps> = ({ data }) => (
+const Products: React.FC = ({ data }) => (
   <Flex direction="column" gap="size-2000">
     {data.allProductsYaml.nodes.map(node => (
       <View key={node.id}>
@@ -23,8 +21,10 @@ const Products: React.FC<PageProps> = ({ data }) => (
         </Heading>
         <Divider />
         <Flex gap="size-50" marginTop="size-150" wrap>
-          {node.tags.map(tag => (
-            <ActionButton variant="secondary">{tag}</ActionButton>
+          {node.tags.map((tag, index) => (
+            <ActionButton key={index} variant="secondary">
+              {tag}
+            </ActionButton>
           ))}
         </Flex>
         <View

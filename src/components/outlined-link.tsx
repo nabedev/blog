@@ -1,12 +1,12 @@
-import React from "react"
-import { Link, PageProps } from "gatsby"
+import React, { useState } from "react"
+import { Link } from "gatsby"
 
 import { Heading, Text, View, Flex } from "@adobe/react-spectrum"
 import { useHover } from "@react-aria/interactions"
 
 const OutlinedLink: React.FC = ({ to, icon, heading, text }) => {
-  let [events, setEvents] = React.useState([])
-  let { hoverProps, isHovered } = useHover({
+  const [, setEvents] = useState([])
+  const { hoverProps, isHovered } = useHover({
     onHoverStart: e =>
       setEvents(events => [...events, `hover start with ${e.pointerType}`]),
     onHoverEnd: e =>

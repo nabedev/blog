@@ -1,7 +1,7 @@
 import React from "react"
-import { Link, PageProps } from "gatsby"
+import { PageProps } from "gatsby"
 
-import { Heading, Text, Flex, View } from "@adobe/react-spectrum"
+import { Heading, Text, Flex } from "@adobe/react-spectrum"
 
 import { SiGithub } from "react-icons/si"
 import Hammer from "@spectrum-icons/workflow/Hammer"
@@ -12,7 +12,7 @@ import OutlinedLink from "../components/outlined-link"
 const IndexPage: React.FC<PageProps> = () => (
   <Flex direction="column" alignItems="center">
     <Heading level={1}>Hello👋</Heading>
-    <Text>I'm Yuki Watanabe, a web developer.</Text>
+    <Text>{`I'm Yuki Watanabe, a web developer.`}</Text>
     <Text>This site built with Gatsby.js and deployed to Netlify.</Text>
 
     <Flex

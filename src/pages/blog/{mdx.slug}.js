@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, PageProps, Page } from "gatsby"
+import { graphql } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "@adobe/react-spectrum"
@@ -19,7 +19,7 @@ const components = {
       <Highlight
         {...defaultProps}
         code={children}
-        language="javascript"
+        language={language}
         theme={dracula}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (

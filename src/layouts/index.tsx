@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import {
   SSRProvider,
   Provider,
@@ -9,6 +9,16 @@ import {
 import "../styles/global.css"
 
 const Layout: React.FC = ({ children }) => {
+  const [hasMounted, setHasMounted] = useState(false)
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
+
+  if (!hasMounted) {
+    return null
+  }
+
   return (
     <SSRProvider>
       <Provider theme={defaultTheme}>

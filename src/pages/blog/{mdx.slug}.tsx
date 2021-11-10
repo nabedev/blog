@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, PageProps } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import { Link } from "@adobe/react-spectrum"
@@ -38,7 +38,7 @@ const components = {
   },
 }
 
-const BlogPost = ({ data }) => (
+const BlogPost: React.FC<PageProps<GatsbyTypes.BlogPageQuery>> = ({ data }) => (
   <>
     <p>{data.mdx.frontmatter.date}</p>
     <MDXProvider components={components}>
@@ -50,7 +50,7 @@ const BlogPost = ({ data }) => (
 export default BlogPost
 
 export const pageQuery = graphql`
-  query ($id: String) {
+  query BlogPage($id: String) {
     mdx(id: { eq: $id }) {
       frontmatter {
         title

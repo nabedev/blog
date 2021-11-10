@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, PageProps } from "gatsby"
 
 import {
   Heading,
@@ -9,7 +9,9 @@ import {
   Link as SpectrumLink,
 } from "@adobe/react-spectrum"
 
-const BlogIndex: React.FC = ({ data }) => (
+const BlogIndex: React.FC<PageProps<GatsbyTypes.BlogIndexQuery>> = ({
+  data,
+}) => (
   <Flex direction="column" gap="size-150">
     {data.allMdx.nodes.map(node => (
       <View key={node.id}>

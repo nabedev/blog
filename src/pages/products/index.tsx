@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, PageProps } from "gatsby"
 import {
   Content,
   Heading,
@@ -12,7 +12,9 @@ import {
   ActionButton,
 } from "@adobe/react-spectrum"
 
-const Products: React.FC = ({ data }) => (
+const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
+  data,
+}) => (
   <Flex direction="column" gap="size-2000">
     {data.allProductsYaml.nodes.map(node => (
       <View key={node.id}>
@@ -64,7 +66,7 @@ const Products: React.FC = ({ data }) => (
 export default Products
 
 export const pageQuery = graphql`
-  query ProductQuery {
+  query ProductIndex {
     allProductsYaml {
       nodes {
         name

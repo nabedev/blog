@@ -5,6 +5,7 @@ module.exports = {
   plugins: [
     `gatsby-plugin-sharp`,
     `gatsby-transformer-yaml`,
+    `gatsby-plugin-typegen`,
     {
       resolve: `gatsby-plugin-mdx`,
       options: {

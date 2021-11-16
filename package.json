@@ -43,7 +43,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "new": "ts-node scripts/new-post.ts",
+    "new": "ts-node ./scripts/new-posts.ts",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,tsx,ts,json,md}\"",

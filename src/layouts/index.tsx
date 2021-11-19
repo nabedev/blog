@@ -21,7 +21,7 @@ const Layout: React.FC = ({ children }) => {
 
   return (
     <SSRProvider>
-      <Provider theme={defaultTheme}>
+      <Provider theme={defaultTheme} colorScheme="dark">
         <View
           maxWidth="768px"
           margin="auto"

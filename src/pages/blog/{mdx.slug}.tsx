@@ -23,7 +23,10 @@ const components = {
         theme={dracula}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre className={className} style={{ ...style, padding: "20px", overflow: "scroll" }}>
+          <pre
+            className={className}
+            style={{ ...style, padding: "20px", overflow: "scroll" }}
+          >
             {tokens.map((line, i) => (
               <div key={i} {...getLineProps({ line, key: i })}>
                 {line.map((token, key) => (

@@ -16,7 +16,7 @@ const IndexPage: React.FC<PageProps> = () => (
     <Text>This site built with Gatsby.js and deployed to Netlify.</Text>
 
     <Flex
-      direction={{ base: "column", S: "row" }}
+      direction={{ S: "column", M: "row" }}
       gap="size-150"
       marginTop="size-250"
       alignItems="center"

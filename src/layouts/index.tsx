@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from "react"
-import {
-  SSRProvider,
-  Provider,
-  defaultTheme,
-  View,
-} from "@adobe/react-spectrum"
+import React from "react"
+import { SSRProvider, Provider, darkTheme, View } from "@adobe/react-spectrum"
 
 import "../styles/global.css"
 
 const Layout: React.FC = ({ children }) => {
-  const [hasMounted, setHasMounted] = useState(false)
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  if (!hasMounted) {
-    return null
-  }
-
   return (
     <SSRProvider>
-      <Provider theme={defaultTheme} colorScheme="dark">
+      <Provider
+        theme={darkTheme}
+        colorScheme="dark"
+        scale="medium"
+        locale="ja-JP"
+        breakpoints={{ S: 0, M: 768, L: 1024 }}
+      >
         <View
           maxWidth="768px"
           margin="auto"

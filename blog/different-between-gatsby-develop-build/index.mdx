@@ -1,20 +1,22 @@
 ---
-title: Gatby develop と build の落とし穴
+title: Gatby プロダクションビルドでのちらつきを直す
 date: 2021-10-31
 topics: ["gatsby", "frontend", "ssr"]
 ---
 
-import flashing from './flashing.mp4'
+import flashing from "./flashing.mp4"
 
-Gatsbyでサイトを構築していて、開発サーバーとプロダクションビルドでの挙動の違いに悩まされました。
-具体的には [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) のような画面のちらつき、またはレイアウトの崩れが初期表示時に起きるというものです。
-原因は SSR と Hydration によるものでした。調べたことを自分なりにまとめてみます。
-([こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#server-side-rendering-101) の記事がよくまとめられています。)
+## 事象
+
+Gatsby でサイトを構築していて、開発サーバーでは起きなかった表示崩れがプロダクションビルドで発生しました。  
+初期表示時に[FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) のような画面のがたつきや、ダークモードのちらつきがプロダクションビルドのみに起きるというものです。
+原因は SSR と Hydration でしたので調べたことをまとめます。
+
+<video width="100%" controls src={flashing} />
 
 ## 再現
-[example](https://github.com/devongovett/rsp-gatsby)をcloneして yarn build && serve  
-こんな感じです
-<video width="100%" controls src={flashing} />
+
+[example](https://github.com/devongovett/rsp-gatsby)を clone して yarn build && yarn serve
 
 ## 環境
 
@@ -44,30 +46,46 @@ npx gatsby info
 ```
 
 ## 本題
-gatsbyのビルドプロセスはの違いは[ドキュメント](https://www.gatsbyjs.com/docs/conceptual/overview-of-the-gatsby-build-process/#understanding-gatsby-develop-runtime) の通りです。
-ざっくり言うと `gatsby build` では全てのページの静的HTMLを SSR(SSG) し、[Hydration](https://www.gatsbyjs.com/docs/conceptual/react-hydration/) を通してクライアントサイドにReactアプリを引き継ぎますが、
-`gatsby develop` では SSR しませんので全てのレンダリングがクライアントサイドで行われます。
-これは SSR 全般に言えることだと思いますが、レンダリングを行うのはサーバーサイド(この場合Node.js環境)なのでレンダリング時にクライアントの情報は分かりません。(windowオブジェクトやCSS MediaQuery等。["シュレディンガーのユーザー"](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#schrodingers-user) )
 
-`window` や デバイス情報に依存したコードが含まれている場合、SSRされたHTMLは完全ではないので `two-pass` レンダーによって完了します。
+gatsby のビルドプロセスはの違いは[ドキュメント](https://www.gatsbyjs.com/docs/conceptual/overview-of-the-gatsby-build-process/#understanding-gatsby-develop-runtime) の通りです。
+ざっくり言うと `gatsby build` では全てのページの HTML をビルド時 SSR(SSG) し、[Hydration](https://www.gatsbyjs.com/docs/conceptual/react-hydration/) を通してクライアントサイドに React アプリを引き継ぎますが、
+`gatsby develop` では SSR しませんので全てのレンダリングがクライアントサイドで行われます。
+これは SSR 全般に言えることだと思いますが、レンダリングを行うのはサーバーサイド(この場合 Node.js 環境)なのでレンダリング時にクライアントの情報は分かりません。(window オブジェクトや CSS MediaQuery 等。["シュレディンガーのユーザー"](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#schrodingers-user) )
+
+`window` や デバイス情報に依存したコードが含まれている場合、SSR された HTML は完全ではないので `two-pass` レンダーによって完了します。
+
 > Gatsby does a two-pass render for HTML. It loops through your pages first rendering only the body and then takes the result body HTML string and passes it as the body prop to your html.js to complete the render.
-> source: https://ja.reactjs.org/docs/react-dom.html#hydrate
+> source: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/#onRenderBody
 
 これがちらつきの原因となり得ます。
 開発サーバーでは全てのレンダリングをクライアントサイドで行うので問題は起きなかったという訳です。
 
-今回僕はAdobeのデザインシステムであるSpectrumの `React Spectrum` を使用していて、
-Themingとかは全てお任せしていたわけですが、Spectrumのカラーテーマは [`preferes-color-scheme` メディアクエリに従います。](https://react-spectrum.adobe.com/react-spectrum/theming.html#color-schemes)
-当然SSR時は検出できませんので、[設定は遅延されます。](https://react-spectrum.adobe.com/react-spectrum/ssr.html#ssr-provider)
-結果、ダークモードが設定されたOSでリクエストした場合、SSRで生成された明るいテーマのHTMが表示されたあとに、darkテーマで再レンダーされる最悪の表示になっていました。
+今回僕は Adobe のデザインシステムである Spectrum の `React Spectrum` を使用していて、
+Theming とかは全てお任せしていたわけですが、Spectrum のカラーテーマは [`preferes-color-scheme` メディアクエリに従います。](https://react-spectrum.adobe.com/react-spectrum/theming.html#color-schemes)
+当然 SSR 時は検出できませんので、[設定は遅延されます。](https://react-spectrum.adobe.com/react-spectrum/ssr.html#ssr-provider)
+結果、ダークモードが設定された OS でリクエストした場合、SSR で生成された明るいテーマの HTM が表示されたあとに、dark テーマで再レンダーされる最悪の表示になっていました。
 
 ## 解決策
-分かりません。
-とりあえず [こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#the-solution) の通り
-マウントされる前は何も render しないことで解決しましたが、これではSSRの恩恵がほぼ無いような・・・
 
-`prefers-color-scheme`クエリでOSのカラーモード設定に従うのは良いプラクティスだと思うのですが、SSRとはトレードオフということですかね。
+React Spectrum は`color-scheme`以外にもロケールによってフォントファミリーだったり、`any-pointer` でアクセシビリティ対応とかしてくれてるっぽいのでその辺のデフォルト値を設定することでとりあえず解決しました。
+(基本的に PC からのアクセスを想定しているので、デフォルト値を PC 用に設定した)
+カラーモードは諦めました。
+
+```jsx
+<Provider
+  theme={darkTheme}
+  colorScheme="dark"
+  scale="medium"
+  locale="ja-JP"
+  breakpoints={{ S: 0, M: 768, L: 1024 }}
+/>
+```
+
+他には[こちら](https://www.joshwcomeau.com/react/the-perils-of-rehydration/#the-solution) の通り DOM にマウントされる前は何も render しない(SSR 時には何もレンダリングしない)というワークアラウンドもあるようですが、
+初期表示を高速にできるメリットは失われますね。SEO は詳しく無いので SEO への影響は分かりません。
+
+`prefers-color-scheme`クエリで OS のカラーモード設定に従うのは良いプラクティスだと思うのですが、SSR とはトレードオフということですかね。
 (レスポンシブのちらつき等も)
 
-developモードでもSSRするようなフラグが追加されている？みたいです。
+develop モードでも SSR するようなフラグが追加されている？みたいです。
 https://github.com/gatsbyjs/gatsby/discussions/28138

@@ -26,42 +26,49 @@ GraphQL から 以下の型で heading タグの情報を得られるとしま�
 ```javascript
 // GraphQLで取得したデータ構造
 input = [
-  { depth: 1 },
-  { depth: 2 },
-  { depth: 2 },
-  { depth: 1 },
-  { depth: 2 },
-  { depth: 3 },
-  { depth: 3 },
+  { depth: 1, "Background" },
+  { depth: 2, "Why" },
+  { depth: 2, "How" },
+  { depth: 1, value: "API" },
+  { depth: 2, value: "Core" },
+  { depth: 3, value: "GET" },
+  { depth: 3, value: "POST" },
 ]
 
 // UIライブラリにつっこむためのデータ構造
 expectedOutput = [
   {
     depth: 1,
+    value: "Background",
     children: [
       {
         depth: 2,
+        value: "Why",
         children: [],
       },
       {
         depth: 2,
+        value: "How",
         children: [],
       },
     ],
   },
   {
     depth: 1,
+    value: "API",
     children: [
       {
         depth: 2,
+        value: "Core",
         children: [
           {
             depth: 3,
+            value: "GET",
             children: [],
           },
           {
             depth: 3,
+            value: "POST",
             children: [],
           },
         ],

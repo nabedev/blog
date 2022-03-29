@@ -34,7 +34,7 @@ const IndexPage: React.FC<PageProps> = () => (
         text="趣味で作ったプロダクトの紹介"
       />
       <OutlinedLink
-        to="https://github.com/wtnb93/blog"
+        to="https://github.com/nabedev/blog"
         icon={<SiGithub size={24} />}
         heading="GitHub"
         text="GitHub"

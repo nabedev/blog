@@ -2,7 +2,7 @@
   description: |
     このサイト
     Gatsby.js
-  repository: https://github.com/nabedev/flickr-bundle-downloader
+  repository: https://github.com/nabedev/blog
   tags: ["WebComponents", "Lit", "Redux", "Rollup"]
 
 - name: Flickr Bundle Downloader

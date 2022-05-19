@@ -45,7 +45,7 @@ const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
       {data.allProductsYaml.nodes.map(node => (
         <View key={node.id}>
           <Flex
-            direction={{ base: "column", S: "row" }}
+            direction={{ S: "column", M: "row" }}
             justifyContent="space-between"
             gap="size-150"
           >

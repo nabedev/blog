@@ -1,19 +1,35 @@
+- name: Blog
+  description: |
+    このサイト
+    Gatsby.js
+  repository: https://github.com/nabedev/flickr-bundle-downloader
+  tags: ["WebComponents", "Lit", "Redux", "Rollup"]
+
 - name: Flickr Bundle Downloader
-  description: Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
-  repository: https://github.com/wtnb93/flickr-bundle-downloader
+  description: |
+    Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
+    Fech API の AbortController で正しく(?)リクエストを中断するようにしている。
+  repository: https://github.com/nabedev/flickr-bundle-downloader
   demo: https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov
   type: "video"
-  tags: ["webcomponents", "lit", "redux", "rollup"]
+  tags: ["WebComponents", "Lit", "Redux", "Rollup"]
 
 - name: Hisotry Search
-  description: Chromeの履歴検索を強化する拡張機能。
-  repository: https://github.com/wtnb93/enhance-chrome-history-search
-  demo: https://github.com/wtnb93/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
-  tags: ["react", "typescript", "parcel"]
+  description: |
+    Chromeの履歴検索を強化する拡張機能。
+    ReactのHooks APIを試してみたくて作った。
+    UIはReact、ShadowDOMでDOMのマークアップ、スタイル、動作の影響を受けないよう(もしくは壊さないよう)にした。
+  repository: https://github.com/nabedev/enhance-chrome-history-search
+  demo: https://github.com/nabedev/enhance-chrome-history-search/blob/master/enhance-chrome-history-demo.gif?raw=true
+  tags: ["React", "TypeScript", "Parcel"]
 
 - name: Holdem Adviser
-  description: テキサスホールデムの基礎を学ぶゲーム。
-  repository: https://github.com/wtnb93/HoldemAdviser
-  demo: https://github.com/wtnb93/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
-  tags: ["javascript"]
-
+  description: |
+    テキサスホールデム(ポーカー)の基礎を学ぶゲーム。
+    ずっと昔に趣味で作ったのをずっと昔にリファタした。
+    アニメーションはCSS、ロジックはPure JavaScriptで書いた。
+    GitHub Pages でホスティングしている。
+    謎にWeb Audio APIを使っていて音が出る。
+  repository: https://github.com/nabedev/HoldemAdviser
+  demo: https://github.com/nabedev/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
+  tags: ["JavaScript"]

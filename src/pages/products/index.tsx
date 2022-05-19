@@ -48,7 +48,7 @@ const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
                   src="https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov"
                 />
               ) : (
-                <Image src={node.demo} alt="demo" />
+                node.demo && <Image src={node.demo} alt="demo" />
               )}
             </View>
           </Flex>

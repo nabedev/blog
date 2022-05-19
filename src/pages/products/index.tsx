@@ -11,40 +11,35 @@ import {
   Link as SpectrumLink,
   ActionButton,
 } from "@adobe/react-spectrum"
+import LinkOut from "@spectrum-icons/workflow/LinkOut"
+import { SiGithub } from "react-icons/si"
 
 const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
   data,
-}) => (
-  <Flex direction="column" gap="size-2000">
-    {data.allProductsYaml.nodes.map(node => (
-      <View key={node.id}>
-        <Heading level={2} marginBottom="size-50">
-          {node.name}
-        </Heading>
-        <Divider />
-        <Flex gap="size-50" marginTop="size-150" wrap>
-          {node.tags.map((tag, index) => (
-            <ActionButton key={index} variant="secondary">
-              {tag}
-            </ActionButton>
-          ))}
-        </Flex>
-        <View
-          padding="size-150"
-          backgroundColor="gray-200"
-          marginTop="size-150"
-        >
+}) => {
+  console.log(data.allProductsYaml)
+  return (
+    <Flex direction="column">
+      {data.allProductsYaml.nodes.map(node => (
+        <View key={node.id}>
           <Flex
             direction={{ base: "column", S: "row" }}
             justifyContent="space-between"
             gap="size-150"
           >
-            <Content flex={1}>
-              <Text>{node.description}</Text>
-              <SpectrumLink>
-                <Link to={node.repository}>repo</Link>
+            <View flex={1}>
+              <Heading>{node.name}</Heading>
+              <SpectrumLink isQuiet variant="">
+                <Link to={node.repository}>
+                  Github <LinkOut size="XS" />
+                </Link>
               </SpectrumLink>
-            </Content>
+              <Content flex={1}>
+                <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
+                  {node.description}
+                </Text>
+              </Content>
+            </View>
             <View flex={1}>
               {node.type === "video" ? (
                 <video
@@ -57,11 +52,12 @@ const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
               )}
             </View>
           </Flex>
+          <Divider size="S" marginTop="size-500" marginBottom="size-500" />
         </View>
-      </View>
-    ))}
-  </Flex>
-)
+      ))}
+    </Flex>
+  )
+}
 
 export default Products
 

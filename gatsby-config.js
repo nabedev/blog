@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
   siteMetadata: {
     title: `Blog`,
@@ -32,6 +34,17 @@ module.exports = {
       options: {
         name: `products`,
         path: `${__dirname}/products`,
+      },
+    },
+    {
+      resolve: "gatsby-source-graphql",
+      options: {
+        typeName: "GitHub",
+        fieldName: "github",
+        url: "https://api.github.com/graphql",
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`
+        }
       },
     },
   ],

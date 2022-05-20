@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "Blog",
   "private": true,
   "description": "blog",
   "version": "0.1.0",
@@ -11,6 +11,7 @@
     "@react-aria/interactions": "^3.6.0",
     "@spectrum-icons/illustrations": "^3.2.2",
     "@spectrum-icons/workflow": "^3.2.1",
+    "dotenv": "^16.0.1",
     "gatsby": "^4.0.2",
     "gatsby-plugin-image": "^2.0.0",
     "gatsby-plugin-layout": "^3.0.0",
@@ -20,6 +21,7 @@
     "gatsby-remark-copy-linked-files": "^5.0.0",
     "gatsby-remark-images": "^6.0.0",
     "gatsby-source-filesystem": "^4.0.0",
+    "gatsby-source-graphql": "^4.14.0",
     "gatsby-transformer-yaml": "^4.0.0",
     "prism-react-renderer": "^1.2.1",
     "react": "^17.0.2",
@@ -48,7 +50,7 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,tsx,ts,json,md}\"",
-    "lint": "eslint src/**/*{js,ts,jsx,tsx,json}",
+    "lint": "eslint src/**/*{ts,tsx}",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"

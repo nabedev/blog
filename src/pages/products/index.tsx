@@ -36,37 +36,66 @@ const displayDemo = node => {
   return <Image src={node.demo} alt="demo" />
 }
 
+const renderContent = (yaml, data) => {
+  const { node } = data.github.viewer.repositories.edges.find(
+    edge => edge.node.url === yaml.repository
+  )
+  return (
+    <View key={yaml.id}>
+      <Flex
+        direction={{ S: "column", M: "row" }}
+        justifyContent="space-between"
+        gap="size-150"
+      >
+        <View flex={1}>
+          <Heading>{node.name}</Heading>
+          <SpectrumLink isQuiet variant="">
+            <Link to={node.url}>
+              Github <LinkOut size="XS" />
+            </Link>
+          </SpectrumLink>
+          <Flex direction="row" gap="size-100" marginTop="size-150">
+            {node.languages.edges.map((edge, index) => (
+              // FIXME
+              <Flex alignItems="center" gap="size-100" key={index}>
+                <div
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: edge.node.color,
+                  }}
+                  key={index}
+                />
+                <Text UNSAFE_style={{ fontSize: 12, fontWeight: "Bold" }}>
+                  {edge.node.name}
+                </Text>
+                <Text UNSAFE_style={{ fontSize: 12, color: "gray" }}>{`${(
+                  (edge.size / node.languages.totalSize) *
+                  100
+                ).toFixed(1)}%`}</Text>
+              </Flex>
+            ))}
+          </Flex>
+          <Content flex={1} marginTop="size-150">
+            <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
+              {yaml.description}
+            </Text>
+          </Content>
+        </View>
+        <View flex={1}>{displayDemo(yaml)}</View>
+      </Flex>
+      <Divider size="S" marginTop="size-500" marginBottom="size-500" />
+    </View>
+  )
+}
+
 const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
   data,
 }) => {
-  console.log(data.allProductsYaml)
   return (
     <Flex direction="column">
-      {data.allProductsYaml.nodes.map(node => (
-        <View key={node.id}>
-          <Flex
-            direction={{ S: "column", M: "row" }}
-            justifyContent="space-between"
-            gap="size-150"
-          >
-            <View flex={1}>
-              <Heading>{node.name}</Heading>
-              <SpectrumLink isQuiet variant="">
-                <Link to={node.repository}>
-                  Github <LinkOut size="XS" />
-                </Link>
-              </SpectrumLink>
-              <Content flex={1} marginTop="size-150">
-                <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
-                  {node.description}
-                </Text>
-              </Content>
-            </View>
-            <View flex={1}>{displayDemo(node)}</View>
-          </Flex>
-          <Divider size="S" marginTop="size-500" marginBottom="size-500" />
-        </View>
-      ))}
+      {data.allProductsYaml.nodes.map(node => renderContent(node, data))}
     </Flex>
   )
 }
@@ -77,13 +106,34 @@ export const pageQuery = graphql`
   query ProductIndex {
     allProductsYaml {
       nodes {
-        name
         repository
         description
         id
         demo
         type
-        tags
+      }
+    }
+
+    github {
+      viewer {
+        repositories(first: 100) {
+          edges {
+            node {
+              languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+                totalSize
+                edges {
+                  size
+                  node {
+                    name
+                    color
+                  }
+                }
+              }
+              name
+              url
+            }
+          }
+        }
       }
     }
   }

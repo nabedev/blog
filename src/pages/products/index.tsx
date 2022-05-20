@@ -51,7 +51,7 @@ const renderContent = (yaml, data) => {
           <Heading>{node.name}</Heading>
           <SpectrumLink isQuiet variant="">
             <Link to={node.url}>
-              Github <LinkOut size="XS" />
+              GitHub <LinkOut size="XS" />
             </Link>
           </SpectrumLink>
           <Flex direction="row" gap="size-100" marginTop="size-150">

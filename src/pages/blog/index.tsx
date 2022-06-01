@@ -11,7 +11,7 @@ export default BlogIndex
 
 export const pageQuery = graphql`
   query BlogIndex {
-    allMdx(sort: { fields: frontmatter___date, order: DESC }) {
+    allMdx(filter: {frontmatter: {isArchive: {nin: true}}}, sort: { fields: frontmatter___date, order: DESC }) {
       nodes {
         id
         slug

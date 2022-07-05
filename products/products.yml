@@ -2,7 +2,7 @@
   description: |
     勉強用につくったTODOアプリ
     - Firebase Authentication
-    - Apollog GraphQL server
+    - Apollo GraphQL server
     などを試す目的
 
 - repository: https://github.com/nabedev/blog

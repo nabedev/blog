@@ -1,19 +1,47 @@
 - repository: https://github.com/nabedev/next-firebase-auth-handson
   description: |
-    勉強用につくったTODOアプリ
-    - Firebase Authentication
-    - Apollo GraphQL server
-    などを試す目的
+    # 制作背景
+      下記の勉強目的
+      - Firebase Authentication
+      - Apollo, GraphQL
+
+    # 工夫点
+      GraphQLのスキーマ定義から、型定義ファイルを自動生成することで、フロントエンドとバックエンドで同じ型定義ファイルを共有できる。
+
+  demo: https://user-images.githubusercontent.com/26590545/177315753-ec55e865-3423-425f-8e4e-d963f2b176b9.png
 
 - repository: https://github.com/nabedev/blog
   description: |
-    このサイト
-    Gatsby.js
+    # 制作背景
+      静的サイトジェネレータを触ってみたかった
+
+    # 工夫点
+    このページで紹介したい成果物が増えた場合、products.ymlにリポジトリURLと追加で必要な情報を追記するだけで、ビルド時にGitHub APIを叩き、必要な情報を取得できるようにしてメンテナビリティを高めた。
+  demo: https://user-images.githubusercontent.com/26590545/177299422-ab4e4ba0-b95c-4a5a-9053-0c8a466a4ced.png
+
+- repository: https://github.com/nabedev/HoldemAdviser
+  description: |
+    # 制作背景
+    ポーカーにハマっていた時に、初心者向けに定石が学べるサイトが無かったのであったら良さそうだと思って作った。
+
+    # 工夫点
+    アニメーションやデザインの心地よさ。
+    純粋なJavaScriptでDOMを操作してみたく、ライブラリ等は一切使わずに全て純粋なJSとCSSのみで実装した。
+  demo: https://github.com/nabedev/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true
 
 - repository: https://github.com/nabedev/flickr-bundle-downloader
   description: |
-    Flickr.comで写真の複数ダウンロードを可能にするChrome拡張機能。
-    Fech API の AbortController で正しく(?)リクエストを中断するようにしている。
+    #制作背景
+    写真共有サイト、Flickr.com ではアルバムの一括ダウンロード機能しか提供していない。
+    気に入った写真だけを選んでダウンロードする機能が欲しかったので、拡張機能として実現することにした。
+
+    # 技術選定
+    Flickr.comの影響を受けないようにWebコンポーネントを使うので、Webコンポーネントを容易に作成可能なライブラリ lit を使うことにした。
+    ダウンロードのキューは、タブを閉じても実行してほしいので、サービスワーカーを使用するようにしたが断念した。
+    サービスワーカー内からDOM APIは使用できないため、写真のURLを解析するために使用する DOMParser API が使えないWeb標準のJS実装 jsdom をトランスパイルして使用しようとしたが、Chrome拡張のセキュリティポリシーに引っかかり断念。(具体的に何がひっかかったのかは忘れてしまった)
+
+    # 工夫点
+    リクエストのキャンセルはFech API の AbortController を使用してリクエストを中断するようにしている。
   demo: https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov
   type: "video"
 
@@ -33,12 +61,3 @@
   description: |
     パンデミックの時に作った超シンプルクローラー。
     定期的にマスクの在庫確認しにいってSlackで通知するようにしたが、在庫復活する時だいたい寝てて買えなくてやめた。
-
-- repository: https://github.com/nabedev/HoldemAdviser
-  description: |
-    テキサスホールデム(ポーカー)の基礎を学ぶゲーム。
-    ずっと昔に趣味で作ったのをずっと昔にリファタした。
-    アニメーションはCSS、ロジックはPure JavaScriptで書いた。
-    GitHub Pages でホスティングしている。
-    謎にWeb Audio APIを使っていて音が出る。
-  demo: https://github.com/nabedev/HoldemAdviser/blob/master/holdem-adviser-demo.gif?raw=true

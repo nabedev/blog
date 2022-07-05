@@ -26276,14 +26276,14 @@ type ProductIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type ProductIndexQuery = { readonly allProductsYaml: { readonly nodes: ReadonlyArray<Pick<ProductsYaml, 'repository' | 'description' | 'id' | 'demo' | 'type'>> }, readonly github: { readonly viewer: { readonly repositories: { readonly edges: Maybe<ReadonlyArray<Maybe<{ readonly node: Maybe<(
-            Pick<GitHub_Repository, 'name' | 'url'>
+            Pick<GitHub_Repository, 'name' | 'url' | 'homepageUrl'>
             & { readonly languages: Maybe<(
               Pick<GitHub_LanguageConnection, 'totalSize'>
               & { readonly edges: Maybe<ReadonlyArray<Maybe<(
                 Pick<GitHub_LanguageEdge, 'size'>
                 & { readonly node: Pick<GitHub_Language, 'name' | 'color'> }
               )>>> }
-            )> }
+            )>, readonly repositoryTopics: { readonly nodes: Maybe<ReadonlyArray<Maybe<{ readonly topic: Pick<GitHub_Topic, 'name'> }>>> } }
           )> }>>> } } } };
 
 type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;

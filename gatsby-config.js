@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config()
 
 module.exports = {
   siteMetadata: {
@@ -43,8 +43,8 @@ module.exports = {
         fieldName: "github",
         url: "https://api.github.com/graphql",
         headers: {
-          Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`
-        }
+          Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`,
+        },
       },
     },
   ],

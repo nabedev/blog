@@ -19,18 +19,12 @@ const displayDemo = node => {
     return (
       <IllustratedMessage>
         <NotFound />
-        <Heading>No demo</Heading>
+        <Heading>There is no preview</Heading>
       </IllustratedMessage>
     )
   }
   if (node.type === "video") {
-    return (
-      <video
-        width="100%"
-        controls
-        src="https://user-images.githubusercontent.com/26590545/140095941-e66a16ea-9fe9-480e-8c12-f3d54e580f73.mov"
-      />
-    )
+    return <video width="100%" controls src={node.demo} />
   }
 
   return <Image src={node.demo} alt="demo" />
@@ -40,21 +34,33 @@ const renderContent = (yaml, data) => {
   const { node } = data.github.viewer.repositories.edges.find(
     edge => edge.node.url === yaml.repository
   )
+
   return (
     <View key={yaml.id}>
       <Flex
         direction={{ S: "column", M: "row" }}
         justifyContent="space-between"
         gap="size-150"
+        alignItems="center"
       >
-        <View flex={1}>
-          <Heading>{node.name}</Heading>
-          <SpectrumLink isQuiet variant="">
-            <Link to={node.url}>
-              GitHub <LinkOut size="XS" />
-            </Link>
-          </SpectrumLink>
-          <Flex direction="row" gap="size-100" marginTop="size-150">
+        <View flex="1">
+          <Heading level={1}>{node.name}</Heading>
+          <Flex gap="size-200">
+            <SpectrumLink isQuiet variant="">
+              <Link to={node.url}>
+                GitHub <LinkOut size="XS" />
+              </Link>
+            </SpectrumLink>
+            {node.homepageUrl && (
+              <SpectrumLink isQuiet variant="">
+                <Link to={node.homepageUrl}>
+                  WebSite <LinkOut size="XS" />
+                </Link>
+              </SpectrumLink>
+            )}
+          </Flex>
+          <Heading level={3}>言語</Heading>
+          <Flex direction="row" gap="size-100">
             {node.languages.edges.map((edge, index) => (
               // FIXME
               <Flex alignItems="center" gap="size-100" key={index}>
@@ -77,15 +83,24 @@ const renderContent = (yaml, data) => {
               </Flex>
             ))}
           </Flex>
-          <Content flex={1} marginTop="size-150">
-            <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
-              {yaml.description}
-            </Text>
-          </Content>
+          <Divider size="S" marginTop="size-300" />
+          <Heading level={3}>技術スタック</Heading>
+          <Flex direction="row" gap="size-100">
+            {node.repositoryTopics.nodes.map((node, index) => (
+              <Flex alignItems="center" gap="size-100" key={index}>
+                <Text>{node.topic.name}</Text>
+              </Flex>
+            ))}
+          </Flex>
         </View>
-        <View flex={1}>{displayDemo(yaml)}</View>
+        <View flex="1">{displayDemo(yaml)}</View>
       </Flex>
-      <Divider size="S" marginTop="size-500" marginBottom="size-500" />
+      <Divider size="S" marginTop="size-300" />
+      <Heading level={3}>説明</Heading>
+      <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
+        {yaml.description}
+      </Text>
+      <Divider size="M" marginTop="size-1000" marginBottom="size-1000" />
     </View>
   )
 }
@@ -129,8 +144,16 @@ export const pageQuery = graphql`
                   }
                 }
               }
+              repositoryTopics(first: 10) {
+                nodes {
+                  topic {
+                    name
+                  }
+                }
+              }
               name
               url
+              homepageUrl
             }
           }
         }

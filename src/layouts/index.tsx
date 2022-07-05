@@ -35,7 +35,7 @@ const Layout: React.FC<PageProps> = ({ children, location }) => {
         breakpoints={{ S: 0, M: 768, L: 1024 }}
       >
         <View
-          maxWidth="768px"
+          maxWidth="1024px"
           margin="auto"
           minHeight="100vh"
           padding="size-400"

@@ -177,6 +177,7 @@ type Internal = {
   readonly mediaType: Maybe<Scalars['String']>;
   readonly owner: Scalars['String'];
   readonly type: Scalars['String'];
+  readonly contentFilePath: Maybe<Scalars['String']>;
 };
 
 
@@ -283,6 +284,9 @@ type Site = Node & {
   readonly host: Maybe<Scalars['String']>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
+  readonly jsxRuntime: Maybe<Scalars['String']>;
+  readonly trailingSlash: Maybe<Scalars['String']>;
+  readonly graphqlTypegen: Maybe<Scalars['Boolean']>;
   readonly id: Scalars['ID'];
   readonly parent: Maybe<Node>;
   readonly children: ReadonlyArray<Node>;
@@ -362,6 +366,25 @@ type SiteBuildMetadata_buildTimeArgs = {
   difference: Maybe<Scalars['String']>;
   locale: Maybe<Scalars['String']>;
 };
+
+type GatsbyImageFormat =
+  | 'NO_CHANGE'
+  | 'auto'
+  | 'jpg'
+  | 'png'
+  | 'webp'
+  | 'avif';
+
+type GatsbyImageLayout =
+  | 'fixed'
+  | 'fullWidth'
+  | 'constrained';
+
+type GatsbyImagePlaceholder =
+  | 'dominantColor'
+  | 'tracedSVG'
+  | 'blurred'
+  | 'none';
 
 type MdxFrontmatter = {
   readonly title: Scalars['String'];
@@ -2605,7 +2628,7 @@ type GitHub_CommitComment = GitHub_Node & GitHub_Comment & GitHub_Deletable & Gi
   readonly isMinimized: Scalars['Boolean'];
   /** The moment the editor made the last edit */
   readonly lastEditedAt: Maybe<Scalars['GitHub_DateTime']>;
-  /** Returns why the comment was minimized. */
+  /** Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation. */
   readonly minimizedReason: Maybe<Scalars['String']>;
   /** Identifies the file path associated with the comment. */
   readonly path: Maybe<Scalars['String']>;
@@ -2790,7 +2813,7 @@ type GitHub_CommitMessage = {
  * qualified).
  *
  * The Ref may be specified by its global node ID or by the
- * repository nameWithOwner and branch name.
+ * `repositoryNameWithOwner` and `branchName`.
  *
  * ### Examples
  *
@@ -2798,10 +2821,10 @@ type GitHub_CommitMessage = {
  *
  *     { "id": "MDM6UmVmMTpyZWZzL2hlYWRzL21haW4=" }
  *
- * Specify a branch using nameWithOwner and branch name:
+ * Specify a branch using `repositoryNameWithOwner` and `branchName`:
  *
  *     {
- *       "nameWithOwner": "github/graphql-client",
+ *       "repositoryNameWithOwner": "github/graphql-client",
  *       "branchName": "main"
  *     }
  */
@@ -4925,6 +4948,8 @@ type GitHub_DiscussionCategory = GitHub_Node & GitHub_RepositoryNode & {
   readonly name: Scalars['String'];
   /** The repository associated with this node. */
   readonly repository: GitHub_Repository;
+  /** The slug of this category. */
+  readonly slug: Scalars['String'];
   /** Identifies the date and time when the object was last updated. */
   readonly updatedAt: Scalars['GitHub_DateTime'];
 };
@@ -4982,7 +5007,7 @@ type GitHub_DiscussionComment = GitHub_Comment & GitHub_Deletable & GitHub_Minim
   readonly isMinimized: Scalars['Boolean'];
   /** The moment the editor made the last edit */
   readonly lastEditedAt: Maybe<Scalars['GitHub_DateTime']>;
-  /** Returns why the comment was minimized. */
+  /** Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation. */
   readonly minimizedReason: Maybe<Scalars['String']>;
   /** Identifies when the comment was published at. */
   readonly publishedAt: Maybe<Scalars['GitHub_DateTime']>;
@@ -5324,7 +5349,7 @@ type GitHub_EnablePullRequestAutoMergeInput = {
   readonly commitHeadline: Maybe<Scalars['String']>;
   /** Commit body to use for the commit when the PR is mergable; if omitted, a default message will be used. */
   readonly commitBody: Maybe<Scalars['String']>;
-  /** The merge method to use. If omitted, defaults to 'MERGE' */
+  /** The merge method to use. If omitted, defaults to `MERGE` */
   readonly mergeMethod: Maybe<GitHub_PullRequestMergeMethod>;
   /** The email address to associate with this merge. */
   readonly authorEmail: Maybe<Scalars['String']>;
@@ -5373,11 +5398,6 @@ type GitHub_Enterprise = GitHub_Node & {
   readonly slug: Scalars['String'];
   /** The HTTP URL for this enterprise. */
   readonly url: Scalars['GitHub_URI'];
-  /**
-   * A list of user accounts on this enterprise.
-   * @deprecated The `Enterprise.userAccounts` field is being removed. Use the `Enterprise.members` field instead. Removal on 2022-07-01 UTC.
-   */
-  readonly userAccounts: GitHub_EnterpriseUserAccountConnection;
   /** Is the current viewer an admin of this enterprise? */
   readonly viewerIsAdmin: Scalars['Boolean'];
   /** The URL of the enterprise website. */
@@ -5410,15 +5430,6 @@ type GitHub_Enterprise_organizationsArgs = {
   query: Maybe<Scalars['String']>;
   viewerOrganizationRole: Maybe<GitHub_RoleInOrganization>;
   orderBy?: Maybe<GitHub_OrganizationOrder>;
-  after: Maybe<Scalars['String']>;
-  before: Maybe<Scalars['String']>;
-  first: Maybe<Scalars['Int']>;
-  last: Maybe<Scalars['Int']>;
-};
-
-
-/** An account to manage multiple organizations with consolidated policy and billing. */
-type GitHub_Enterprise_userAccountsArgs = {
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
@@ -6429,32 +6440,14 @@ type GitHub_EnterpriseUserAccount_organizationsArgs = {
   last: Maybe<Scalars['Int']>;
 };
 
-/** The connection type for EnterpriseUserAccount. */
-type GitHub_EnterpriseUserAccountConnection = {
-  /** A list of edges. */
-  readonly edges: Maybe<ReadonlyArray<Maybe<GitHub_EnterpriseUserAccountEdge>>>;
-  /** A list of nodes. */
-  readonly nodes: Maybe<ReadonlyArray<Maybe<GitHub_EnterpriseUserAccount>>>;
-  /** Information to aid in pagination. */
-  readonly pageInfo: GitHub_PageInfo;
-  /** Identifies the total count of items in the connection. */
-  readonly totalCount: Scalars['Int'];
-};
-
-/** An edge in a connection. */
-type GitHub_EnterpriseUserAccountEdge = {
-  /** A cursor for use in pagination. */
-  readonly cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  readonly node: Maybe<GitHub_EnterpriseUserAccount>;
-};
-
 /** The possible roles for enterprise membership. */
 type GitHub_EnterpriseUserAccountMembershipRole =
   /** The user is a member of an organization in the enterprise. */
   | 'MEMBER'
   /** The user is an owner of an organization in the enterprise. */
-  | 'OWNER';
+  | 'OWNER'
+  /** The user is not an owner of the enterprise, and not a member or owner of any organizations in the enterprise; only for EMU-enabled enterprises. */
+  | 'UNAFFILIATED';
 
 /** The possible GitHub Enterprise deployments where this user can exist. */
 type GitHub_EnterpriseUserDeployment =
@@ -6924,7 +6917,7 @@ type GitHub_GistComment = GitHub_Node & GitHub_Comment & GitHub_Deletable & GitH
   readonly isMinimized: Scalars['Boolean'];
   /** The moment the editor made the last edit */
   readonly lastEditedAt: Maybe<Scalars['GitHub_DateTime']>;
-  /** Returns why the comment was minimized. */
+  /** Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation. */
   readonly minimizedReason: Maybe<Scalars['String']>;
   /** Identifies when the comment was published at. */
   readonly publishedAt: Maybe<Scalars['GitHub_DateTime']>;
@@ -7616,23 +7609,23 @@ type GitHub_Issue_projectV2Args = {
 
 /** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
 type GitHub_Issue_projectsNextArgs = {
+  query: Maybe<Scalars['String']>;
+  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
 };
 
 
 /** An Issue is a place to discuss ideas, enhancements, tasks, and bugs for a project. */
 type GitHub_Issue_projectsV2Args = {
+  query: Maybe<Scalars['String']>;
+  orderBy?: Maybe<GitHub_ProjectV2Order>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  orderBy?: Maybe<GitHub_ProjectV2Order>;
 };
 
 
@@ -7737,7 +7730,7 @@ type GitHub_IssueComment = GitHub_Node & GitHub_Comment & GitHub_Deletable & Git
   readonly issue: GitHub_Issue;
   /** The moment the editor made the last edit */
   readonly lastEditedAt: Maybe<Scalars['GitHub_DateTime']>;
-  /** Returns why the comment was minimized. */
+  /** Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation. */
   readonly minimizedReason: Maybe<Scalars['String']>;
   /** Identifies when the comment was published at. */
   readonly publishedAt: Maybe<Scalars['GitHub_DateTime']>;
@@ -9054,7 +9047,7 @@ type GitHub_MilestonedEvent = GitHub_Node & {
 type GitHub_Minimizable = {
   /** Returns whether or not a comment has been minimized. */
   readonly isMinimized: Scalars['Boolean'];
-  /** Returns why the comment was minimized. */
+  /** Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation. */
   readonly minimizedReason: Maybe<Scalars['String']>;
   /** Check if the current viewer can minimize this object. */
   readonly viewerCanMinimize: Scalars['Boolean'];
@@ -10711,6 +10704,8 @@ type GitHub_Organization = GitHub_Node & GitHub_Actor & GitHub_PackageOwner & Gi
   readonly viewerIsFollowing: Scalars['Boolean'];
   /** True if the viewer is sponsoring this user/organization. */
   readonly viewerIsSponsoring: Scalars['Boolean'];
+  /** Whether contributors are required to sign off on web-based commits for repositories in this organization. */
+  readonly webCommitSignoffRequired: Scalars['Boolean'];
   /** The organization's public profile URL. */
   readonly websiteUrl: Maybe<Scalars['GitHub_URI']>;
 };
@@ -10872,23 +10867,23 @@ type GitHub_Organization_projectsArgs = {
 
 /** An account on GitHub, with one or more owners, that has repositories, members and teams. */
 type GitHub_Organization_projectsNextArgs = {
+  query: Maybe<Scalars['String']>;
+  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
 };
 
 
 /** An account on GitHub, with one or more owners, that has repositories, members and teams. */
 type GitHub_Organization_projectsV2Args = {
+  query: Maybe<Scalars['String']>;
+  orderBy?: Maybe<GitHub_ProjectV2Order>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  orderBy?: Maybe<GitHub_ProjectV2Order>;
 };
 
 
@@ -10987,6 +10982,7 @@ type GitHub_Organization_sponsorsActivitiesArgs = {
   last: Maybe<Scalars['Int']>;
   period?: Maybe<GitHub_SponsorsActivityPeriod>;
   orderBy?: Maybe<GitHub_SponsorsActivityOrder>;
+  actions?: Maybe<ReadonlyArray<GitHub_SponsorsActivityAction>>;
 };
 
 
@@ -12637,12 +12633,12 @@ type GitHub_ProjectNextOwner_projectNextArgs = {
 
 /** Represents an owner of a project (beta). */
 type GitHub_ProjectNextOwner_projectsNextArgs = {
+  query: Maybe<Scalars['String']>;
+  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
 };
 
 /** Ways in which lists of projects can be ordered upon return. */
@@ -12989,6 +12985,8 @@ type GitHub_ProjectV2Item = GitHub_Node & {
   readonly creator: Maybe<GitHub_Actor>;
   /** Identifies the primary key from the database. */
   readonly databaseId: Maybe<Scalars['Int']>;
+  /** A specific field value given a field name */
+  readonly fieldValueByName: Maybe<GitHub_ProjectV2ItemFieldValue>;
   /** List of field values */
   readonly fieldValues: GitHub_ProjectV2ItemFieldValueConnection;
   readonly id: Scalars['ID'];
@@ -13004,11 +13002,18 @@ type GitHub_ProjectV2Item = GitHub_Node & {
 
 
 /** An item within a Project. */
+type GitHub_ProjectV2Item_fieldValueByNameArgs = {
+  name: Scalars['String'];
+};
+
+
+/** An item within a Project. */
 type GitHub_ProjectV2Item_fieldValuesArgs = {
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<GitHub_ProjectV2ItemFieldValueOrder>;
 };
 
 /** The connection type for ProjectV2Item. */
@@ -13139,6 +13144,7 @@ type GitHub_ProjectV2ItemFieldPullRequestValue_pullRequestsArgs = {
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<GitHub_PullRequestOrder>;
 };
 
 /** The value of a repository field in a Project item. */
@@ -13265,6 +13271,19 @@ type GitHub_ProjectV2ItemFieldValueEdge = {
   readonly node: Maybe<GitHub_ProjectV2ItemFieldValue>;
 };
 
+/** Ordering options for project v2 item field value connections */
+type GitHub_ProjectV2ItemFieldValueOrder = {
+  /** The field to order the project v2 item field values by. */
+  readonly field: GitHub_ProjectV2ItemFieldValueOrderField;
+  /** The ordering direction. */
+  readonly direction: GitHub_OrderDirection;
+};
+
+/** Properties by which project v2 item field value connections can be ordered. */
+type GitHub_ProjectV2ItemFieldValueOrderField =
+  /** Order project v2 item field values by the their position in the project */
+  | 'POSITION';
+
 /** Ordering options for project v2 item connections */
 type GitHub_ProjectV2ItemOrder = {
   /** The field to order the project v2 items by. */
@@ -13371,12 +13390,12 @@ type GitHub_ProjectV2Owner_projectV2Args = {
 
 /** Represents an owner of a project (beta). */
 type GitHub_ProjectV2Owner_projectsV2Args = {
+  query: Maybe<Scalars['String']>;
+  orderBy?: Maybe<GitHub_ProjectV2Order>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  orderBy?: Maybe<GitHub_ProjectV2Order>;
 };
 
 /** Recent projects for the owner. */
@@ -13462,8 +13481,6 @@ type GitHub_ProjectV2View = GitHub_Node & {
   /** The view's group-by field. */
   readonly groupBy: Maybe<GitHub_ProjectV2FieldConnection>;
   readonly id: Scalars['ID'];
-  /** The view's filtered items. */
-  readonly items: GitHub_ProjectV2ItemConnection;
   /** The project view's layout. */
   readonly layout: GitHub_ProjectV2ViewLayout;
   /** The project view's name. */
@@ -13489,15 +13506,7 @@ type GitHub_ProjectV2View_groupByArgs = {
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-};
-
-
-/** A view within a ProjectV2. */
-type GitHub_ProjectV2View_itemsArgs = {
-  after: Maybe<Scalars['String']>;
-  before: Maybe<Scalars['String']>;
-  first: Maybe<Scalars['Int']>;
-  last: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<GitHub_ProjectV2FieldOrder>;
 };
 
 
@@ -13516,6 +13525,7 @@ type GitHub_ProjectV2View_verticalGroupByArgs = {
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<GitHub_ProjectV2FieldOrder>;
 };
 
 
@@ -13525,6 +13535,7 @@ type GitHub_ProjectV2View_visibleFieldsArgs = {
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<GitHub_ProjectV2FieldOrder>;
 };
 
 /** The connection type for ProjectV2View. */
@@ -13595,11 +13606,6 @@ type GitHub_ProjectView = GitHub_Node & {
   readonly groupBy: Maybe<ReadonlyArray<Scalars['Int']>>;
   readonly id: Scalars['ID'];
   /**
-   * The view's filtered items.
-   * @deprecated The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement. Removal on 2022-10-01 UTC.
-   */
-  readonly items: GitHub_ProjectNextItemConnection;
-  /**
    * The project view's layout.
    * @deprecated The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement. Removal on 2022-10-01 UTC.
    */
@@ -13639,15 +13645,6 @@ type GitHub_ProjectView = GitHub_Node & {
    * @deprecated The `ProjectNext` API is deprecated in favour of the more capable `ProjectV2` API. Follow the ProjectV2 guide at https://github.blog/changelog/2022-06-23-the-new-github-issues-june-23rd-update/, to find a suitable replacement. Removal on 2022-10-01 UTC.
    */
   readonly visibleFields: Maybe<ReadonlyArray<Scalars['Int']>>;
-};
-
-
-/** A view within a Project. */
-type GitHub_ProjectView_itemsArgs = {
-  after: Maybe<Scalars['String']>;
-  before: Maybe<Scalars['String']>;
-  first: Maybe<Scalars['Int']>;
-  last: Maybe<Scalars['Int']>;
 };
 
 /** The connection type for ProjectView. */
@@ -14060,23 +14057,23 @@ type GitHub_PullRequest_projectV2Args = {
 
 /** A repository pull request. */
 type GitHub_PullRequest_projectsNextArgs = {
+  query: Maybe<Scalars['String']>;
+  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
 };
 
 
 /** A repository pull request. */
 type GitHub_PullRequest_projectsV2Args = {
+  query: Maybe<Scalars['String']>;
+  orderBy?: Maybe<GitHub_ProjectV2Order>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  orderBy?: Maybe<GitHub_ProjectV2Order>;
 };
 
 
@@ -14455,7 +14452,7 @@ type GitHub_PullRequestReviewComment = GitHub_Node & GitHub_Comment & GitHub_Del
   readonly isMinimized: Scalars['Boolean'];
   /** The moment the editor made the last edit */
   readonly lastEditedAt: Maybe<Scalars['GitHub_DateTime']>;
-  /** Returns why the comment was minimized. */
+  /** Returns why the comment was minimized. One of `abuse`, `off-topic`, `outdated`, `resolved`, `duplicate` and `spam`. Note that the case and formatting of these values differs from the inputs to the `MinimizeComment` mutation. */
   readonly minimizedReason: Maybe<Scalars['String']>;
   /** Identifies the original commit associated with the comment. */
   readonly originalCommit: Maybe<GitHub_Commit>;
@@ -14719,6 +14716,41 @@ type GitHub_PullRequestTemplate = {
   readonly filename: Maybe<Scalars['String']>;
   /** The repository the template belongs to */
   readonly repository: GitHub_Repository;
+};
+
+/** A threaded list of comments for a given pull request. */
+type GitHub_PullRequestThread = GitHub_Node & {
+  /** A list of pull request comments associated with the thread. */
+  readonly comments: GitHub_PullRequestReviewCommentConnection;
+  readonly id: Scalars['ID'];
+  /** Whether or not the thread has been collapsed (resolved) */
+  readonly isCollapsed: Scalars['Boolean'];
+  /** Indicates whether this thread was outdated by newer changes. */
+  readonly isOutdated: Scalars['Boolean'];
+  /** Whether this thread has been resolved */
+  readonly isResolved: Scalars['Boolean'];
+  /** Identifies the pull request associated with this thread. */
+  readonly pullRequest: GitHub_PullRequest;
+  /** Identifies the repository associated with this thread. */
+  readonly repository: GitHub_Repository;
+  /** The user who resolved this thread */
+  readonly resolvedBy: Maybe<GitHub_User>;
+  /** Indicates whether the current viewer can reply to this thread. */
+  readonly viewerCanReply: Scalars['Boolean'];
+  /** Whether or not the viewer can resolve this thread */
+  readonly viewerCanResolve: Scalars['Boolean'];
+  /** Whether or not the viewer can unresolve this thread */
+  readonly viewerCanUnresolve: Scalars['Boolean'];
+};
+
+
+/** A threaded list of comments for a given pull request. */
+type GitHub_PullRequestThread_commentsArgs = {
+  after: Maybe<Scalars['String']>;
+  before: Maybe<Scalars['String']>;
+  first: Maybe<Scalars['Int']>;
+  last: Maybe<Scalars['Int']>;
+  skip: Maybe<Scalars['Int']>;
 };
 
 /** The connection type for PullRequestTimelineItem. */
@@ -16789,6 +16821,8 @@ type GitHub_Repository = GitHub_Node & GitHub_ProjectV2Recent & GitHub_ProjectOw
   readonly discussion: Maybe<GitHub_Discussion>;
   /** A list of discussion categories that are available in the repository. */
   readonly discussionCategories: GitHub_DiscussionCategoryConnection;
+  /** A discussion category by slug. */
+  readonly discussionCategory: Maybe<GitHub_DiscussionCategory>;
   /** A list of discussions that have been opened in the repository. */
   readonly discussions: GitHub_DiscussionConnection;
   /** The number of kilobytes this repository occupies on disk. */
@@ -16988,6 +17022,8 @@ type GitHub_Repository = GitHub_Node & GitHub_ProjectV2Recent & GitHub_ProjectOw
   readonly vulnerabilityAlerts: Maybe<GitHub_RepositoryVulnerabilityAlertConnection>;
   /** A list of users watching the repository. */
   readonly watchers: GitHub_UserConnection;
+  /** Whether contributors are required to sign off on web-based commits in this repository. */
+  readonly webCommitSignoffRequired: Scalars['Boolean'];
 };
 
 
@@ -17069,6 +17105,12 @@ type GitHub_Repository_discussionCategoriesArgs = {
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
   filterByAssignable?: Maybe<Scalars['Boolean']>;
+};
+
+
+/** A repository contains the content for a project. */
+type GitHub_Repository_discussionCategoryArgs = {
+  slug: Scalars['String'];
 };
 
 
@@ -18010,6 +18052,8 @@ type GitHub_RepositoryVulnerabilityAlert = GitHub_Node & GitHub_RepositoryNode &
   readonly dependabotUpdate: Maybe<GitHub_DependabotUpdate>;
   /** The scope of an alert's dependency */
   readonly dependencyScope: Maybe<GitHub_RepositoryVulnerabilityAlertDependencyScope>;
+  /** Comment explaining the reason the alert was dismissed */
+  readonly dismissComment: Maybe<Scalars['String']>;
   /** The reason the alert was dismissed */
   readonly dismissReason: Maybe<Scalars['String']>;
   /** When was the alert dismissed? */
@@ -18611,6 +18655,8 @@ type GitHub_SecurityAdvisoryEcosystem =
   | 'COMPOSER'
   /** Erlang/Elixir packages hosted at hex.pm */
   | 'ERLANG'
+  /** GitHub Actions */
+  | 'ACTIONS'
   /** Go modules */
   | 'GO'
   /** Java artifacts hosted at the Maven central repository */
@@ -18982,6 +19028,7 @@ type GitHub_Sponsorable_sponsorsActivitiesArgs = {
   last: Maybe<Scalars['Int']>;
   period?: Maybe<GitHub_SponsorsActivityPeriod>;
   orderBy?: Maybe<GitHub_SponsorsActivityOrder>;
+  actions?: Maybe<ReadonlyArray<GitHub_SponsorsActivityAction>>;
 };
 
 
@@ -19491,6 +19538,10 @@ type GitHub_StartRepositoryMigrationInput = {
   readonly githubPat: Maybe<Scalars['String']>;
   /** Whether to skip migrating releases for the repository. */
   readonly skipReleases: Maybe<Scalars['Boolean']>;
+  /** The visibility of the imported repository. */
+  readonly targetRepoVisibility: Maybe<Scalars['String']>;
+  /** Whether to lock the source repository. */
+  readonly lockSource: Maybe<Scalars['Boolean']>;
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId: Maybe<Scalars['String']>;
 };
@@ -20695,6 +20746,8 @@ type GitHub_TransferIssueInput = {
   readonly issueId: Scalars['ID'];
   /** The Node ID of the repository the issue should be transferred to */
   readonly repositoryId: Scalars['ID'];
+  /** Whether to create labels if they don't exist in the target repository (matched by name) */
+  readonly createLabelsIfMissing: Maybe<Scalars['Boolean']>;
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId: Maybe<Scalars['String']>;
 };
@@ -20757,6 +20810,8 @@ type GitHub_TreeEntry = {
   readonly path: Maybe<Scalars['String']>;
   /** The Repository the tree entry belongs to */
   readonly repository: GitHub_Repository;
+  /** Entry byte size */
+  readonly size: Scalars['Int'];
   /** If the TreeEntry is for a directory occupied by a submodule project, this returns the corresponding submodule */
   readonly submodule: Maybe<GitHub_Submodule>;
   /** Entry file type. */
@@ -21739,6 +21794,26 @@ type GitHub_UpdateOrganizationAllowPrivateRepositoryForkingSettingPayload = {
   readonly organization: Maybe<GitHub_Organization>;
 };
 
+/** Autogenerated input type of UpdateOrganizationWebCommitSignoffSetting */
+type GitHub_UpdateOrganizationWebCommitSignoffSettingInput = {
+  /** The ID of the organization on which to set the web commit signoff setting. */
+  readonly organizationId: Scalars['ID'];
+  /** Enable signoff on web-based commits for repositories in the organization? */
+  readonly webCommitSignoffRequired: Scalars['Boolean'];
+  /** A unique identifier for the client performing the mutation. */
+  readonly clientMutationId: Maybe<Scalars['String']>;
+};
+
+/** Autogenerated return type of UpdateOrganizationWebCommitSignoffSetting */
+type GitHub_UpdateOrganizationWebCommitSignoffSettingPayload = {
+  /** A unique identifier for the client performing the mutation. */
+  readonly clientMutationId: Maybe<Scalars['String']>;
+  /** A message confirming the result of updating the web commit signoff setting. */
+  readonly message: Maybe<Scalars['String']>;
+  /** The organization with the updated web commit signoff setting. */
+  readonly organization: Maybe<GitHub_Organization>;
+};
+
 /** Autogenerated input type of UpdateProjectCard */
 type GitHub_UpdateProjectCardInput = {
   /** The ProjectCard ID to update. */
@@ -22169,6 +22244,26 @@ type GitHub_UpdateRepositoryInput = {
 type GitHub_UpdateRepositoryPayload = {
   /** A unique identifier for the client performing the mutation. */
   readonly clientMutationId: Maybe<Scalars['String']>;
+  /** The updated repository. */
+  readonly repository: Maybe<GitHub_Repository>;
+};
+
+/** Autogenerated input type of UpdateRepositoryWebCommitSignoffSetting */
+type GitHub_UpdateRepositoryWebCommitSignoffSettingInput = {
+  /** The ID of the repository to update. */
+  readonly repositoryId: Scalars['ID'];
+  /** Indicates if the repository should require signoff on web-based commits. */
+  readonly webCommitSignoffRequired: Scalars['Boolean'];
+  /** A unique identifier for the client performing the mutation. */
+  readonly clientMutationId: Maybe<Scalars['String']>;
+};
+
+/** Autogenerated return type of UpdateRepositoryWebCommitSignoffSetting */
+type GitHub_UpdateRepositoryWebCommitSignoffSettingPayload = {
+  /** A unique identifier for the client performing the mutation. */
+  readonly clientMutationId: Maybe<Scalars['String']>;
+  /** A message confirming the result of updating the web commit signoff setting. */
+  readonly message: Maybe<Scalars['String']>;
   /** The updated repository. */
   readonly repository: Maybe<GitHub_Repository>;
 };
@@ -22689,23 +22784,23 @@ type GitHub_User_projectsArgs = {
 
 /** A user is an individual's account on GitHub that owns repositories and can make new content. */
 type GitHub_User_projectsNextArgs = {
+  query: Maybe<Scalars['String']>;
+  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  sortBy?: Maybe<GitHub_ProjectNextOrderField>;
 };
 
 
 /** A user is an individual's account on GitHub that owns repositories and can make new content. */
 type GitHub_User_projectsV2Args = {
+  query: Maybe<Scalars['String']>;
+  orderBy?: Maybe<GitHub_ProjectV2Order>;
   after: Maybe<Scalars['String']>;
   before: Maybe<Scalars['String']>;
   first: Maybe<Scalars['Int']>;
   last: Maybe<Scalars['Int']>;
-  query: Maybe<Scalars['String']>;
-  orderBy?: Maybe<GitHub_ProjectV2Order>;
 };
 
 
@@ -22839,6 +22934,7 @@ type GitHub_User_sponsorsActivitiesArgs = {
   last: Maybe<Scalars['Int']>;
   period?: Maybe<GitHub_SponsorsActivityPeriod>;
   orderBy?: Maybe<GitHub_SponsorsActivityOrder>;
+  actions?: Maybe<ReadonlyArray<GitHub_SponsorsActivityAction>>;
 };
 
 
@@ -23603,6 +23699,9 @@ type Query_siteArgs = {
   host: Maybe<StringQueryOperatorInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
+  jsxRuntime: Maybe<StringQueryOperatorInput>;
+  trailingSlash: Maybe<StringQueryOperatorInput>;
+  graphqlTypegen: Maybe<BooleanQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
   parent: Maybe<NodeFilterInput>;
   children: Maybe<NodeFilterListInput>;
@@ -23896,6 +23995,7 @@ type InternalFilterInput = {
   readonly mediaType: Maybe<StringQueryOperatorInput>;
   readonly owner: Maybe<StringQueryOperatorInput>;
   readonly type: Maybe<StringQueryOperatorInput>;
+  readonly contentFilePath: Maybe<StringQueryOperatorInput>;
 };
 
 type ProductsYamlFilterListInput = {
@@ -24039,6 +24139,7 @@ type FileFieldsEnum =
   | 'childrenMdx.parent.internal.mediaType'
   | 'childrenMdx.parent.internal.owner'
   | 'childrenMdx.parent.internal.type'
+  | 'childrenMdx.parent.internal.contentFilePath'
   | 'childrenMdx.children'
   | 'childrenMdx.children.id'
   | 'childrenMdx.children.parent.id'
@@ -24054,6 +24155,7 @@ type FileFieldsEnum =
   | 'childrenMdx.children.internal.mediaType'
   | 'childrenMdx.children.internal.owner'
   | 'childrenMdx.children.internal.type'
+  | 'childrenMdx.children.internal.contentFilePath'
   | 'childrenMdx.internal.content'
   | 'childrenMdx.internal.contentDigest'
   | 'childrenMdx.internal.description'
@@ -24062,6 +24164,7 @@ type FileFieldsEnum =
   | 'childrenMdx.internal.mediaType'
   | 'childrenMdx.internal.owner'
   | 'childrenMdx.internal.type'
+  | 'childrenMdx.internal.contentFilePath'
   | 'childMdx.rawBody'
   | 'childMdx.fileAbsolutePath'
   | 'childMdx.frontmatter.title'
@@ -24097,6 +24200,7 @@ type FileFieldsEnum =
   | 'childMdx.parent.internal.mediaType'
   | 'childMdx.parent.internal.owner'
   | 'childMdx.parent.internal.type'
+  | 'childMdx.parent.internal.contentFilePath'
   | 'childMdx.children'
   | 'childMdx.children.id'
   | 'childMdx.children.parent.id'
@@ -24112,6 +24216,7 @@ type FileFieldsEnum =
   | 'childMdx.children.internal.mediaType'
   | 'childMdx.children.internal.owner'
   | 'childMdx.children.internal.type'
+  | 'childMdx.children.internal.contentFilePath'
   | 'childMdx.internal.content'
   | 'childMdx.internal.contentDigest'
   | 'childMdx.internal.description'
@@ -24120,6 +24225,7 @@ type FileFieldsEnum =
   | 'childMdx.internal.mediaType'
   | 'childMdx.internal.owner'
   | 'childMdx.internal.type'
+  | 'childMdx.internal.contentFilePath'
   | 'childrenProductsYaml'
   | 'childrenProductsYaml.id'
   | 'childrenProductsYaml.parent.id'
@@ -24136,6 +24242,7 @@ type FileFieldsEnum =
   | 'childrenProductsYaml.parent.internal.mediaType'
   | 'childrenProductsYaml.parent.internal.owner'
   | 'childrenProductsYaml.parent.internal.type'
+  | 'childrenProductsYaml.parent.internal.contentFilePath'
   | 'childrenProductsYaml.children'
   | 'childrenProductsYaml.children.id'
   | 'childrenProductsYaml.children.parent.id'
@@ -24151,6 +24258,7 @@ type FileFieldsEnum =
   | 'childrenProductsYaml.children.internal.mediaType'
   | 'childrenProductsYaml.children.internal.owner'
   | 'childrenProductsYaml.children.internal.type'
+  | 'childrenProductsYaml.children.internal.contentFilePath'
   | 'childrenProductsYaml.internal.content'
   | 'childrenProductsYaml.internal.contentDigest'
   | 'childrenProductsYaml.internal.description'
@@ -24159,6 +24267,7 @@ type FileFieldsEnum =
   | 'childrenProductsYaml.internal.mediaType'
   | 'childrenProductsYaml.internal.owner'
   | 'childrenProductsYaml.internal.type'
+  | 'childrenProductsYaml.internal.contentFilePath'
   | 'childrenProductsYaml.repository'
   | 'childrenProductsYaml.description'
   | 'childrenProductsYaml.demo'
@@ -24178,6 +24287,7 @@ type FileFieldsEnum =
   | 'childProductsYaml.parent.internal.mediaType'
   | 'childProductsYaml.parent.internal.owner'
   | 'childProductsYaml.parent.internal.type'
+  | 'childProductsYaml.parent.internal.contentFilePath'
   | 'childProductsYaml.children'
   | 'childProductsYaml.children.id'
   | 'childProductsYaml.children.parent.id'
@@ -24193,6 +24303,7 @@ type FileFieldsEnum =
   | 'childProductsYaml.children.internal.mediaType'
   | 'childProductsYaml.children.internal.owner'
   | 'childProductsYaml.children.internal.type'
+  | 'childProductsYaml.children.internal.contentFilePath'
   | 'childProductsYaml.internal.content'
   | 'childProductsYaml.internal.contentDigest'
   | 'childProductsYaml.internal.description'
@@ -24201,6 +24312,7 @@ type FileFieldsEnum =
   | 'childProductsYaml.internal.mediaType'
   | 'childProductsYaml.internal.owner'
   | 'childProductsYaml.internal.type'
+  | 'childProductsYaml.internal.contentFilePath'
   | 'childProductsYaml.repository'
   | 'childProductsYaml.description'
   | 'childProductsYaml.demo'
@@ -24221,6 +24333,7 @@ type FileFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -24236,6 +24349,7 @@ type FileFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -24244,6 +24358,7 @@ type FileFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -24260,6 +24375,7 @@ type FileFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -24275,6 +24391,7 @@ type FileFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -24283,6 +24400,7 @@ type FileFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -24290,7 +24408,8 @@ type FileFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type FileGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -24480,6 +24599,7 @@ type DirectoryFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -24495,6 +24615,7 @@ type DirectoryFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -24503,6 +24624,7 @@ type DirectoryFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -24519,6 +24641,7 @@ type DirectoryFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -24534,6 +24657,7 @@ type DirectoryFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -24542,6 +24666,7 @@ type DirectoryFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -24549,7 +24674,8 @@ type DirectoryFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type DirectoryGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -24693,6 +24819,9 @@ type SiteFieldsEnum =
   | 'host'
   | 'polyfill'
   | 'pathPrefix'
+  | 'jsxRuntime'
+  | 'trailingSlash'
+  | 'graphqlTypegen'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -24709,6 +24838,7 @@ type SiteFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -24724,6 +24854,7 @@ type SiteFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -24732,6 +24863,7 @@ type SiteFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -24748,6 +24880,7 @@ type SiteFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -24763,6 +24896,7 @@ type SiteFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -24771,6 +24905,7 @@ type SiteFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -24778,7 +24913,8 @@ type SiteFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type SiteGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -24828,6 +24964,9 @@ type SiteFilterInput = {
   readonly host: Maybe<StringQueryOperatorInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
+  readonly jsxRuntime: Maybe<StringQueryOperatorInput>;
+  readonly trailingSlash: Maybe<StringQueryOperatorInput>;
+  readonly graphqlTypegen: Maybe<BooleanQueryOperatorInput>;
   readonly id: Maybe<StringQueryOperatorInput>;
   readonly parent: Maybe<NodeFilterInput>;
   readonly children: Maybe<NodeFilterListInput>;
@@ -24908,6 +25047,7 @@ type SiteFunctionFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -24923,6 +25063,7 @@ type SiteFunctionFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -24931,6 +25072,7 @@ type SiteFunctionFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -24947,6 +25089,7 @@ type SiteFunctionFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -24962,6 +25105,7 @@ type SiteFunctionFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -24970,6 +25114,7 @@ type SiteFunctionFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -24977,7 +25122,8 @@ type SiteFunctionFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type SiteFunctionGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -25131,6 +25277,7 @@ type SitePageFieldsEnum =
   | 'pluginCreator.parent.internal.mediaType'
   | 'pluginCreator.parent.internal.owner'
   | 'pluginCreator.parent.internal.type'
+  | 'pluginCreator.parent.internal.contentFilePath'
   | 'pluginCreator.children'
   | 'pluginCreator.children.id'
   | 'pluginCreator.children.parent.id'
@@ -25146,6 +25293,7 @@ type SitePageFieldsEnum =
   | 'pluginCreator.children.internal.mediaType'
   | 'pluginCreator.children.internal.owner'
   | 'pluginCreator.children.internal.type'
+  | 'pluginCreator.children.internal.contentFilePath'
   | 'pluginCreator.internal.content'
   | 'pluginCreator.internal.contentDigest'
   | 'pluginCreator.internal.description'
@@ -25154,6 +25302,7 @@ type SitePageFieldsEnum =
   | 'pluginCreator.internal.mediaType'
   | 'pluginCreator.internal.owner'
   | 'pluginCreator.internal.type'
+  | 'pluginCreator.internal.contentFilePath'
   | 'id'
   | 'parent.id'
   | 'parent.parent.id'
@@ -25170,6 +25319,7 @@ type SitePageFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -25185,6 +25335,7 @@ type SitePageFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -25193,6 +25344,7 @@ type SitePageFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -25209,6 +25361,7 @@ type SitePageFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -25224,6 +25377,7 @@ type SitePageFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -25232,6 +25386,7 @@ type SitePageFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -25239,7 +25394,8 @@ type SitePageFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type SitePageGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -25372,6 +25528,7 @@ type SitePluginFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -25387,6 +25544,7 @@ type SitePluginFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -25395,6 +25553,7 @@ type SitePluginFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -25411,6 +25570,7 @@ type SitePluginFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -25426,6 +25586,7 @@ type SitePluginFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -25434,6 +25595,7 @@ type SitePluginFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -25441,7 +25603,8 @@ type SitePluginFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type SitePluginGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -25552,6 +25715,7 @@ type SiteBuildMetadataFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -25567,6 +25731,7 @@ type SiteBuildMetadataFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -25575,6 +25740,7 @@ type SiteBuildMetadataFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -25591,6 +25757,7 @@ type SiteBuildMetadataFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -25606,6 +25773,7 @@ type SiteBuildMetadataFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -25614,6 +25782,7 @@ type SiteBuildMetadataFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -25621,7 +25790,8 @@ type SiteBuildMetadataFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type SiteBuildMetadataGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -25759,6 +25929,7 @@ type MdxFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -25774,6 +25945,7 @@ type MdxFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -25782,6 +25954,7 @@ type MdxFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -25798,6 +25971,7 @@ type MdxFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -25813,6 +25987,7 @@ type MdxFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -25821,6 +25996,7 @@ type MdxFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -25828,7 +26004,8 @@ type MdxFieldsEnum =
   | 'internal.ignoreType'
   | 'internal.mediaType'
   | 'internal.owner'
-  | 'internal.type';
+  | 'internal.type'
+  | 'internal.contentFilePath';
 
 type MdxGroupConnection = {
   readonly totalCount: Scalars['Int'];
@@ -25938,6 +26115,7 @@ type ProductsYamlFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -25953,6 +26131,7 @@ type ProductsYamlFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -25961,6 +26140,7 @@ type ProductsYamlFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -25977,6 +26157,7 @@ type ProductsYamlFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -25992,6 +26173,7 @@ type ProductsYamlFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -26000,6 +26182,7 @@ type ProductsYamlFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -26008,6 +26191,7 @@ type ProductsYamlFieldsEnum =
   | 'internal.mediaType'
   | 'internal.owner'
   | 'internal.type'
+  | 'internal.contentFilePath'
   | 'repository'
   | 'description'
   | 'demo'
@@ -26121,6 +26305,7 @@ type GraphQLSourceFieldsEnum =
   | 'parent.parent.internal.mediaType'
   | 'parent.parent.internal.owner'
   | 'parent.parent.internal.type'
+  | 'parent.parent.internal.contentFilePath'
   | 'parent.children'
   | 'parent.children.id'
   | 'parent.children.parent.id'
@@ -26136,6 +26321,7 @@ type GraphQLSourceFieldsEnum =
   | 'parent.children.internal.mediaType'
   | 'parent.children.internal.owner'
   | 'parent.children.internal.type'
+  | 'parent.children.internal.contentFilePath'
   | 'parent.internal.content'
   | 'parent.internal.contentDigest'
   | 'parent.internal.description'
@@ -26144,6 +26330,7 @@ type GraphQLSourceFieldsEnum =
   | 'parent.internal.mediaType'
   | 'parent.internal.owner'
   | 'parent.internal.type'
+  | 'parent.internal.contentFilePath'
   | 'children'
   | 'children.id'
   | 'children.parent.id'
@@ -26160,6 +26347,7 @@ type GraphQLSourceFieldsEnum =
   | 'children.parent.internal.mediaType'
   | 'children.parent.internal.owner'
   | 'children.parent.internal.type'
+  | 'children.parent.internal.contentFilePath'
   | 'children.children'
   | 'children.children.id'
   | 'children.children.parent.id'
@@ -26175,6 +26363,7 @@ type GraphQLSourceFieldsEnum =
   | 'children.children.internal.mediaType'
   | 'children.children.internal.owner'
   | 'children.children.internal.type'
+  | 'children.children.internal.contentFilePath'
   | 'children.internal.content'
   | 'children.internal.contentDigest'
   | 'children.internal.description'
@@ -26183,6 +26372,7 @@ type GraphQLSourceFieldsEnum =
   | 'children.internal.mediaType'
   | 'children.internal.owner'
   | 'children.internal.type'
+  | 'children.internal.contentFilePath'
   | 'internal.content'
   | 'internal.contentDigest'
   | 'internal.description'
@@ -26191,6 +26381,7 @@ type GraphQLSourceFieldsEnum =
   | 'internal.mediaType'
   | 'internal.owner'
   | 'internal.type'
+  | 'internal.contentFilePath'
   | 'typeName'
   | 'fieldName';
 
@@ -26249,21 +26440,6 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type TopicQueryVariables = Exact<{
-  topic: Maybe<Scalars['String']>;
-}>;
-
-
-type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'slug'>
-      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
-    )> } };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
-
 type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -26271,25 +26447,6 @@ type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
       Pick<Mdx, 'id' | 'slug'>
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };
-
-type ProductIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type ProductIndexQuery = { readonly allProductsYaml: { readonly nodes: ReadonlyArray<Pick<ProductsYaml, 'repository' | 'description' | 'id' | 'demo' | 'type'>> }, readonly github: { readonly viewer: { readonly repositories: { readonly edges: Maybe<ReadonlyArray<Maybe<{ readonly node: Maybe<(
-            Pick<GitHub_Repository, 'name' | 'url' | 'homepageUrl'>
-            & { readonly languages: Maybe<(
-              Pick<GitHub_LanguageConnection, 'totalSize'>
-              & { readonly edges: Maybe<ReadonlyArray<Maybe<(
-                Pick<GitHub_LanguageEdge, 'size'>
-                & { readonly node: Pick<GitHub_Language, 'name' | 'color'> }
-              )>>> }
-            )>, readonly repositoryTopics: { readonly nodes: Maybe<ReadonlyArray<Maybe<{ readonly topic: Pick<GitHub_Topic, 'name'> }>>> } }
-          )> }>>> } } } };
-
-type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TopicIndexQuery = { readonly allMdx: Pick<MdxConnection, 'distinct'> };
 
 type BlogPageQueryVariables = Exact<{
   id: Maybe<Scalars['String']>;
@@ -26300,5 +26457,25 @@ type BlogPageQuery = { readonly mdx: Maybe<(
     Pick<Mdx, 'body'>
     & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date'>> }
   )> };
+
+type TopicQueryVariables = Exact<{
+  topic: Maybe<Scalars['String']>;
+}>;
+
+
+type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'slug'>
+      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
+    )> } };
+
+type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TopicIndexQuery = { readonly allMdx: Pick<MdxConnection, 'distinct'> };
+
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

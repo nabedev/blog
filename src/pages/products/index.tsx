@@ -1,163 +1,163 @@
-import React from "react"
-import { Link, graphql, PageProps } from "gatsby"
-import {
-  Content,
-  Heading,
-  Text,
-  View,
-  Flex,
-  Divider,
-  Image,
-  Link as SpectrumLink,
-  IllustratedMessage,
-} from "@adobe/react-spectrum"
-import NotFound from "@spectrum-icons/illustrations/NotFound"
-import LinkOut from "@spectrum-icons/workflow/LinkOut"
+// import React from "react"
+// import { Link, graphql, PageProps } from "gatsby"
+// import {
+//   Content,
+//   Heading,
+//   Text,
+//   View,
+//   Flex,
+//   Divider,
+//   Image,
+//   Link as SpectrumLink,
+//   IllustratedMessage,
+// } from "@adobe/react-spectrum"
+// import NotFound from "@spectrum-icons/illustrations/NotFound"
+// import LinkOut from "@spectrum-icons/workflow/LinkOut"
 
-const displayDemo = node => {
-  if (!node.demo) {
-    return (
-      <IllustratedMessage>
-        <NotFound />
-        <Heading>There is no preview</Heading>
-      </IllustratedMessage>
-    )
-  }
-  if (node.type === "video") {
-    return <video width="100%" controls src={node.demo} />
-  }
+// const displayDemo = node => {
+//   if (!node.demo) {
+//     return (
+//       <IllustratedMessage>
+//         <NotFound />
+//         <Heading>There is no preview</Heading>
+//       </IllustratedMessage>
+//     )
+//   }
+//   if (node.type === "video") {
+//     return <video width="100%" controls src={node.demo} />
+//   }
 
-  return <Image src={node.demo} alt="demo" />
-}
+//   return <Image src={node.demo} alt="demo" />
+// }
 
-const renderContent = (yaml, data) => {
-  const { node } = data.github.viewer.repositories.edges.find(
-    edge => edge.node.url === yaml.repository
-  )
+// const renderContent = (yaml, data) => {
+//   const { node } = data.github.viewer.repositories.edges.find(
+//     edge => edge.node.url === yaml.repository
+//   )
 
-  return (
-    <View key={yaml.id}>
-      <Flex
-        direction={{ S: "column", M: "row" }}
-        justifyContent="space-between"
-        gap="size-150"
-        alignItems="center"
-      >
-        <View flex="1">
-          <Heading level={1}>{node.name}</Heading>
-          <Flex gap="size-200">
-            <SpectrumLink isQuiet variant="">
-              <Link to={node.url}>
-                GitHub <LinkOut size="XS" />
-              </Link>
-            </SpectrumLink>
-            {node.homepageUrl && (
-              <SpectrumLink isQuiet variant="">
-                <Link to={node.homepageUrl}>
-                  WebSite <LinkOut size="XS" />
-                </Link>
-              </SpectrumLink>
-            )}
-          </Flex>
-          <Heading level={3}>言語</Heading>
-          <Flex direction="row" gap="size-100">
-            {node.languages.edges.map((edge, index) => (
-              // FIXME
-              <Flex alignItems="center" gap="size-100" key={index}>
-                <div
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    background: edge.node.color,
-                  }}
-                  key={index}
-                />
-                <Text UNSAFE_style={{ fontSize: 12, fontWeight: "Bold" }}>
-                  {edge.node.name}
-                </Text>
-                <Text UNSAFE_style={{ fontSize: 12, color: "gray" }}>{`${(
-                  (edge.size / node.languages.totalSize) *
-                  100
-                ).toFixed(1)}%`}</Text>
-              </Flex>
-            ))}
-          </Flex>
-          <Divider size="S" marginTop="size-300" />
-          <Heading level={3}>技術スタック</Heading>
-          <Flex direction="row" gap="size-100">
-            {node.repositoryTopics.nodes.map((node, index) => (
-              <Flex alignItems="center" gap="size-100" key={index}>
-                <Text>{node.topic.name}</Text>
-              </Flex>
-            ))}
-          </Flex>
-        </View>
-        <View flex="1">{displayDemo(yaml)}</View>
-      </Flex>
-      <Divider size="S" marginTop="size-300" />
-      <Heading level={3}>説明</Heading>
-      <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
-        {yaml.description}
-      </Text>
-      <Divider size="M" marginTop="size-1000" marginBottom="size-1000" />
-    </View>
-  )
-}
+//   return (
+//     <View key={yaml.id}>
+//       <Flex
+//         direction={{ S: "column", M: "row" }}
+//         justifyContent="space-between"
+//         gap="size-150"
+//         alignItems="center"
+//       >
+//         <View flex="1">
+//           <Heading level={1}>{node.name}</Heading>
+//           <Flex gap="size-200">
+//             <SpectrumLink isQuiet variant="">
+//               <Link to={node.url}>
+//                 GitHub <LinkOut size="XS" />
+//               </Link>
+//             </SpectrumLink>
+//             {node.homepageUrl && (
+//               <SpectrumLink isQuiet variant="">
+//                 <Link to={node.homepageUrl}>
+//                   WebSite <LinkOut size="XS" />
+//                 </Link>
+//               </SpectrumLink>
+//             )}
+//           </Flex>
+//           <Heading level={3}>言語</Heading>
+//           <Flex direction="row" gap="size-100">
+//             {node.languages.edges.map((edge, index) => (
+//               // FIXME
+//               <Flex alignItems="center" gap="size-100" key={index}>
+//                 <div
+//                   style={{
+//                     width: 8,
+//                     height: 8,
+//                     borderRadius: "50%",
+//                     background: edge.node.color,
+//                   }}
+//                   key={index}
+//                 />
+//                 <Text UNSAFE_style={{ fontSize: 12, fontWeight: "Bold" }}>
+//                   {edge.node.name}
+//                 </Text>
+//                 <Text UNSAFE_style={{ fontSize: 12, color: "gray" }}>{`${(
+//                   (edge.size / node.languages.totalSize) *
+//                   100
+//                 ).toFixed(1)}%`}</Text>
+//               </Flex>
+//             ))}
+//           </Flex>
+//           <Divider size="S" marginTop="size-300" />
+//           <Heading level={3}>技術スタック</Heading>
+//           <Flex direction="row" gap="size-100">
+//             {node.repositoryTopics.nodes.map((node, index) => (
+//               <Flex alignItems="center" gap="size-100" key={index}>
+//                 <Text>{node.topic.name}</Text>
+//               </Flex>
+//             ))}
+//           </Flex>
+//         </View>
+//         <View flex="1">{displayDemo(yaml)}</View>
+//       </Flex>
+//       <Divider size="S" marginTop="size-300" />
+//       <Heading level={3}>説明</Heading>
+//       <Text UNSAFE_style={{ "white-space": "pre-wrap" }}>
+//         {yaml.description}
+//       </Text>
+//       <Divider size="M" marginTop="size-1000" marginBottom="size-1000" />
+//     </View>
+//   )
+// }
 
-const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
-  data,
-}) => {
-  return (
-    <Flex direction="column">
-      {data.allProductsYaml.nodes.map(node => renderContent(node, data))}
-    </Flex>
-  )
-}
+// const Products: React.FC<PageProps<GatsbyTypes.ProductIndexQuery>> = ({
+//   data,
+// }) => {
+//   return (
+//     <Flex direction="column">
+//       {data.allProductsYaml.nodes.map(node => renderContent(node, data))}
+//     </Flex>
+//   )
+// }
 
-export default Products
+// export default Products
 
-export const pageQuery = graphql`
-  query ProductIndex {
-    allProductsYaml {
-      nodes {
-        repository
-        description
-        id
-        demo
-        type
-      }
-    }
+// export const pageQuery = graphql`
+//   query ProductIndex {
+//     allProductsYaml {
+//       nodes {
+//         repository
+//         description
+//         id
+//         demo
+//         type
+//       }
+//     }
 
-    github {
-      viewer {
-        repositories(first: 100) {
-          edges {
-            node {
-              languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
-                totalSize
-                edges {
-                  size
-                  node {
-                    name
-                    color
-                  }
-                }
-              }
-              repositoryTopics(first: 10) {
-                nodes {
-                  topic {
-                    name
-                  }
-                }
-              }
-              name
-              url
-              homepageUrl
-            }
-          }
-        }
-      }
-    }
-  }
-`
+//     github {
+//       viewer {
+//         repositories(first: 100) {
+//           edges {
+//             node {
+//               languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
+//                 totalSize
+//                 edges {
+//                   size
+//                   node {
+//                     name
+//                     color
+//                   }
+//                 }
+//               }
+//               repositoryTopics(first: 10) {
+//                 nodes {
+//                   topic {
+//                     name
+//                   }
+//                 }
+//               }
+//               name
+//               url
+//               homepageUrl
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `

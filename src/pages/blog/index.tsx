@@ -4,8 +4,10 @@ import { graphql, PageProps } from "gatsby"
 import PostList from "../../components/post-list"
 
 const BlogIndex: React.FC<PageProps<GatsbyTypes.BlogIndexQuery>> = ({
-  data,
-}) => <PostList data={data} />
+  data
+}) => {
+  return <PostList data={data} />
+}
 
 export default BlogIndex
 

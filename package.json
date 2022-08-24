@@ -51,7 +51,7 @@
   "scripts": {
     "new": "ts-node ./scripts/new-posts.ts",
     "build": "gatsby build",
-    "dev": "gatsby develop",
+    "dev": "gatsby develop -p 3000",
     "format": "prettier --write \"**/*.{js,jsx,tsx,ts,json,md}\"",
     "lint": "eslint src/**/*{ts,tsx}",
     "serve": "gatsby serve",

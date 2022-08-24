@@ -26440,14 +26440,6 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'id' | 'slug'>
-      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
-    )> } };
-
 type BlogPageQueryVariables = Exact<{
   id: Maybe<Scalars['String']>;
 }>;
@@ -26464,7 +26456,15 @@ type TopicQueryVariables = Exact<{
 
 
 type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'slug'>
+      Pick<Mdx, 'id' | 'slug'>
+      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
+    )> } };
+
+type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'id' | 'slug'>
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };
 

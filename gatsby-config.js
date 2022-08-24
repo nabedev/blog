@@ -9,6 +9,7 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-yaml`,
     `gatsby-plugin-typegen`,
+    'gatsby-plugin-postcss',
     {
       resolve: `gatsby-plugin-mdx`,
       options: {

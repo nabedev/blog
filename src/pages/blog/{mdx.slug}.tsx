@@ -13,6 +13,7 @@ const components = {
     const language = className.replace(/language-/, "")
 
     return (
+      <div className="mockup-code">
       <Highlight
         {...defaultProps}
         code={children}
@@ -34,6 +35,7 @@ const components = {
           </pre>
         )}
       </Highlight>
+      </div>
     )
   },
 }

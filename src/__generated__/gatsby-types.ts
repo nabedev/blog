@@ -26440,16 +26440,6 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type BlogPageQueryVariables = Exact<{
-  id: Maybe<Scalars['String']>;
-}>;
-
-
-type BlogPageQuery = { readonly mdx: Maybe<(
-    Pick<Mdx, 'body'>
-    & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date'>> }
-  )> };
-
 type TopicQueryVariables = Exact<{
   topic: Maybe<Scalars['String']>;
 }>;
@@ -26460,6 +26450,16 @@ type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };
 
+type BlogPageQueryVariables = Exact<{
+  id: Maybe<Scalars['String']>;
+}>;
+
+
+type BlogPageQuery = { readonly mdx: Maybe<(
+    Pick<Mdx, 'body'>
+    & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date'>> }
+  )> };
+
 type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -26468,14 +26468,14 @@ type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };
 
-type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type TopicIndexQuery = { readonly allMdx: Pick<MdxConnection, 'distinct'> };
-
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
+
+type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type TopicIndexQuery = { readonly allMdx: Pick<MdxConnection, 'distinct'> };
 
 }

@@ -5,13 +5,16 @@ const PostList: React.FC<PageProps<GatsbyTypes.BlogIndexQuery>> = ({
   data,
 }) => {
   return (
-    <>
+    <div class="flex flex-col gap-y-8">
       {data.allMdx.nodes.map(node => (
-        <Link key={node.id} to={`/blog/${node.slug}`}>
+        <>
+        <a key={node.id} className="link link-hover"><Link to={`/blog/${node.slug}`}>
           {node.frontmatter.title}
-        </Link>
+        </Link></a>
+        <span class="badge">{node.frontmatter.date}</span>
+        </>
       ))}
-    </>
+    </div>
   )
 }
 

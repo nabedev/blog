@@ -1,18 +1,20 @@
 import React from "react"
-import { Link, graphql, PageProps } from "gatsby"
+import { Link as GatsbyLink, graphql, PageProps } from "gatsby"
+import { Flex, Link } from "@adobe/react-spectrum"
 
 
 const TopicIndex: React.FC<PageProps<GatsbyTypes.TopicIndexQuery>> = ({
   data,
 }) => (
-  <>
-    <h1>ALl topics:</h1>
+    <Flex gap="size-100">
       {data.allMdx.distinct.map((topic, index) => (
-        <Link to={`./${topic}`} key={index}>
+        <Link key={index}>
+        <GatsbyLink to={`./${topic}`} key={index}>
           {topic}
+        </GatsbyLink>
         </Link>
       ))}
-  </>
+      </Flex>
 )
 
 export default TopicIndex

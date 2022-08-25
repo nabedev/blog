@@ -5,14 +5,13 @@ import React from "react"
 const PostList: React.FC<PageProps<GatsbyTypes.BlogIndexQuery>> = ({
   data,
 }) => {
-  console.log({ data })
   return (
     <Flex direction="column" gap="size-600">
       {data.allMdx.nodes.map(node => (
         <Flex key={node.id} direction="column" gap="size-100">
 
           <div className="spectrum-Heading spectrum-Heading--sizeXS">
-            <Link isQuiet>
+            <Link isQuiet variant="secondary">
             <GatsbyLink to={`/blog/${node.slug}`}>
               {node.frontmatter.title}
             </GatsbyLink>

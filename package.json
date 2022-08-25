@@ -11,6 +11,7 @@
     "@spectrum-css/helptext": "^2.0.4",
     "@spectrum-css/typography": "^4.0.20",
     "@spectrum-css/vars": "^8.0.0",
+    "@spectrum-icons/workflow": "^4.0.1",
     "dotenv": "^16.0.1",
     "gatsby": "^4.21.1",
     "gatsby-plugin-image": "^2.21.0",

@@ -42,6 +42,7 @@ const components = {
 
 const BlogPost: React.FC<PageProps<GatsbyTypes.BlogPageQuery>> = ({ data }) => (
   <>
+    <h1>{data.mdx.frontmatter.title}</h1>
     <p>{data.mdx.frontmatter.date}</p>
     <MDXProvider components={components}>
       <MDXRenderer>{data.mdx.body}</MDXRenderer>

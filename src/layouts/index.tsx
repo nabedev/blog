@@ -24,7 +24,7 @@ const renderBreadcrumbs = (paths: string[]) => {
 const Layout: React.FC<PageProps> = ({ children, location }) => {
   const paths = location.pathname.split("/").filter(item => item !== "")
   return (
-    <View margin="auto">
+    <View margin="auto" minHeight="100vh" maxWidth="768px">
       {renderBreadcrumbs(paths)}
       <View>
       {children}

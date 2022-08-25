@@ -2,20 +2,18 @@ import React from "react"
 import { graphql, PageProps } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import { Link } from "@adobe/react-spectrum"
 import Highlight, { defaultProps } from "prism-react-renderer"
 import dracula from "prism-react-renderer/themes/dracula"
 
 const components = {
   a: props => (
-    <Link>
-      <a {...props} />
-    </Link>
+    <a {...props} />
   ),
   code: ({ children, className }) => {
     const language = className.replace(/language-/, "")
 
     return (
+      <div className="mockup-code">
       <Highlight
         {...defaultProps}
         code={children}
@@ -37,6 +35,7 @@ const components = {
           </pre>
         )}
       </Highlight>
+      </div>
     )
   },
 }

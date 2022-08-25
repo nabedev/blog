@@ -5,6 +5,7 @@ module.exports = {
     title: `Blog`,
   },
   plugins: [
+    `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
     `gatsby-transformer-yaml`,
     `gatsby-plugin-typegen`,
@@ -12,11 +13,19 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         gatsbyRemarkPlugins: [
-          `gatsby-remark-copy-linked-files`,
+          // {
+          //   resolve: `gatsby-remark-copy-linked-files`,
+          //   options: {
+          //     destinationDir: `path/to/dir`,
+          //     ignoreFileExtensions: [`png`, `jpg`, `jpeg`, `bmp`, `tiff`],
+          //   },
+          // },
           {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 768,
+              backgroundColor: `none`,
+              withWebp: `true`,
             },
           },
         ],

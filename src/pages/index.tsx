@@ -12,7 +12,7 @@ import React from "react"
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
-    <Flex justifyContent="center" minHeight="100vh">
+    <Flex justifyContent="center" height="100vh">
       <Flex direction="column" alignItems="center" justifyContent="center">
       <StaticImage
         src="../images/nabedev.png"

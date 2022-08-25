@@ -1,20 +1,38 @@
+import { Flex, Link, Text, View } from "@adobe/react-spectrum"
+import { Link as GatsbyLink, PageProps } from "gatsby"
 import React from "react"
-import { Link, PageProps } from "gatsby"
 
 const PostList: React.FC<PageProps<GatsbyTypes.BlogIndexQuery>> = ({
   data,
 }) => {
+  console.log({ data })
   return (
-    <div class="flex flex-col gap-y-8">
+    <Flex direction="column" gap="size-600">
       {data.allMdx.nodes.map(node => (
-        <>
-        <a key={node.id} className="link link-hover"><Link to={`/blog/${node.slug}`}>
-          {node.frontmatter.title}
-        </Link></a>
-        <span class="badge">{node.frontmatter.date}</span>
-        </>
+        <Flex key={node.id} direction="column" gap="size-100">
+
+          <div className="spectrum-Heading spectrum-Heading--sizeXS">
+            <Link isQuiet>
+            <GatsbyLink to={`/blog/${node.slug}`}>
+              {node.frontmatter.title}
+            </GatsbyLink>
+            </Link>
+          </div>
+
+          <div className="spectrum-HelpText spectrum-HelpText--sizeM spectrum-HelpText--neutral is-disabled">
+            <div className="spectrum-HelpText-text">{node.frontmatter.date}</div>
+          </div>
+
+          <Flex gap="size-100">
+            {node.frontmatter.topics.map((topic, index)=> (
+              <Link isQuiet key={index}>
+                  <GatsbyLink to={`/topics/${topic}`}>{topic}</GatsbyLink>
+                </Link>
+            ))}
+          </Flex>
+        </Flex>
       ))}
-    </div>
+    </Flex>
   )
 }
 

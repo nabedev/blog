@@ -1,38 +1,35 @@
 import { Link, PageProps } from "gatsby"
 import React from "react"
-import {defaultTheme, Provider} from '@adobe/react-spectrum';
 
+import {Breadcrumbs, View, Item} from '@adobe/react-spectrum'
 
 const renderBreadcrumbs = (paths: string[]) => {
   if (paths.length === 0) {
     return
   }
   return (
-    <div className="text-sm breadcrumbs">
-      <ul>
-        <li>
+    <Breadcrumbs size="M">
+        <Item key="home">
           <Link to="/">Home</Link>
-        </li>
-        {paths.map((path, index) => (
-          <li key={index}>
+        </Item>
+        {paths.map((path) => (
+          <Item key={path}>
             <Link to={`/${path}`}>{path}</Link>
-          </li>
+          </Item>
         ))}
-      </ul>
-    </div>
+    </Breadcrumbs>
   )
 }
 
 const Layout: React.FC<PageProps> = ({ children, location }) => {
   const paths = location.pathname.split("/").filter(item => item !== "")
-  console.log({paths})
   return (
-    <Provider theme={defaultTheme}>
-      <div className="container mx-md">
+    <View margin="auto" padding="size-300">
       {renderBreadcrumbs(paths)}
+      <View marginTop="size-500">
       {children}
-    </div>
-    </Provider>
+      </View>
+    </View>
   )
 }
 

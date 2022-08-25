@@ -12,7 +12,7 @@ export default Topic
 export const query = graphql`
   query Topic($topic: String) {
     allMdx(
-      filter: { frontmatter: { topics: { in: [$topic] } } }
+      filter: { frontmatter: { isArchive: { nin: true }, topics: { in: [$topic] } } }
       sort: { fields: frontmatter___date, order: DESC }
     ) {
       nodes {

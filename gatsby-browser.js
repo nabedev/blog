@@ -1,7 +1,12 @@
 import React from "react"
+import {defaultTheme, Provider} from "@adobe/react-spectrum"
 
 import Layout from "./src/layouts/index"
 
-export const wrapPageElement = ({ element, props }) => (
-  <Layout {...props}>{element}</Layout>
-)
+import './src/styles/global.css'
+
+export const wrapPageElement = ({ element, props }) => {
+  return <Provider theme={defaultTheme}>
+    <Layout {...props}>{element}</Layout>
+  </Provider>
+}

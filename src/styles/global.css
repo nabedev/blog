@@ -1,0 +1,7 @@
+@import '../../node_modules/@spectrum-css/vars/dist/spectrum-global.css';
+@import '../../node_modules/@spectrum-css/typography/';
+@import '../../node_modules/@spectrum-css/helptext/index.css';
+
+body {
+  margin: 0;
+}

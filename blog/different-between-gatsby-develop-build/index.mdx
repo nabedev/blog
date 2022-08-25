@@ -6,7 +6,7 @@ topics: ["gatsby", "frontend", "ssr"]
 
 import flashing from "./flashing.mp4"
 
-## 事象
+# 事象
 
 Gatsby でサイトを構築していて、開発サーバーでは起きなかった表示崩れがプロダクションビルドで発生しました。  
 初期表示時に[FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content) のような画面のがたつきや、ダークモードのちらつきがプロダクションビルドのみに起きるというものです。
@@ -14,11 +14,11 @@ Gatsby でサイトを構築していて、開発サーバーでは起きなか�
 
 <video width="100%" controls src={flashing} />
 
-## 再現
+# 再現
 
 [example](https://github.com/devongovett/rsp-gatsby)を clone して yarn build && yarn serve
 
-## 環境
+# 環境
 
 ```zsh
 npx gatsby info
@@ -45,7 +45,7 @@ npx gatsby info
     gatsby-transformer-yaml: ^4.0.0 => 4.0.0
 ```
 
-## 本題
+# 本題
 
 gatsby のビルドプロセスはの違いは[ドキュメント](https://www.gatsbyjs.com/docs/conceptual/overview-of-the-gatsby-build-process/#understanding-gatsby-develop-runtime) の通りです。
 ざっくり言うと `gatsby build` では全てのページの HTML をビルド時 SSR(SSG) し、[Hydration](https://www.gatsbyjs.com/docs/conceptual/react-hydration/) を通してクライアントサイドに React アプリを引き継ぎますが、
@@ -65,7 +65,7 @@ Theming とかは全てお任せしていたわけですが、Spectrum のカラ
 当然 SSR 時は検出できませんので、[設定は遅延されます。](https://react-spectrum.adobe.com/react-spectrum/ssr.html#ssr-provider)
 結果、ダークモードが設定された OS でリクエストした場合、SSR で生成された明るいテーマの HTM が表示されたあとに、dark テーマで再レンダーされる最悪の表示になっていました。
 
-## 解決策
+# 解決策
 
 React Spectrum は`color-scheme`以外にもロケールによってフォントファミリーだったり、`any-pointer` でアクセシビリティ対応とかしてくれてるっぽいのでその辺のデフォルト値を設定することでとりあえず解決しました。
 (基本的に PC からのアクセスを想定しているので、デフォルト値を PC 用に設定した)

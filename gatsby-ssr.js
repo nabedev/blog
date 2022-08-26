@@ -1,10 +1,15 @@
+import { Provider, SSRProvider, defaultTheme } from "@adobe/react-spectrum"
 import React from "react"
-import {defaultTheme, Provider, SSRProvider} from "@adobe/react-spectrum"
 
 import Layout from "./src/layouts/index"
-
-import './src/styles/global.css'
+import "./src/styles/global.css"
 
 export const wrapPageElement = ({ element, props }) => {
-  return <Layout {...props}>{element}</Layout>
+  return (
+    <SSRProvider>
+      <Provider theme={defaultTheme} locale="en-US">
+        <Layout {...props}>{element}</Layout>
+      </Provider>
+    </SSRProvider>
+  )
 }

@@ -55,7 +55,7 @@ gatsby のビルドプロセスはの違いは[ドキュメント](https://www.g
 `window` や デバイス情報に依存したコードが含まれている場合、SSR された HTML は完全ではないので `two-pass` レンダーによって完了します。
 
 > Gatsby does a two-pass render for HTML. It loops through your pages first rendering only the body and then takes the result body HTML string and passes it as the body prop to your html.js to complete the render.
-> source: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/#onRenderBody
+> source: [#onRenderBody](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-ssr/#onRenderBody)
 
 これがちらつきの原因となり得ます。
 開発サーバーでは全てのレンダリングをクライアントサイドで行うので問題は起きなかったという訳です。
@@ -88,4 +88,4 @@ React Spectrum は`color-scheme`以外にもロケールによってフォント
 (レスポンシブのちらつき等も)
 
 develop モードでも SSR するようなフラグが追加されている？みたいです。
-https://github.com/gatsbyjs/gatsby/discussions/28138
+[#28138](https://github.com/gatsbyjs/gatsby/discussions/28138)

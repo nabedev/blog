@@ -1,5 +1,5 @@
+import { PageProps, graphql } from "gatsby"
 import React from "react"
-import { graphql, PageProps } from "gatsby"
 
 import PostList from "./post-list"
 
@@ -12,7 +12,9 @@ export default Topic
 export const query = graphql`
   query Topic($topic: String) {
     allMdx(
-      filter: { frontmatter: { isArchive: { nin: true }, topics: { in: [$topic] } } }
+      filter: {
+        frontmatter: { isArchive: { nin: true }, topics: { in: [$topic] } }
+      }
       sort: { fields: frontmatter___date, order: DESC }
     ) {
       nodes {

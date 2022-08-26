@@ -1,7 +1,7 @@
-import { mkdirSync, writeFileSync } from "fs"
-import slugify from "slugify"
-import { prompt, QuestionCollection } from "inquirer"
 import { stripIndent } from "common-tags"
+import { mkdirSync, writeFileSync } from "fs"
+import { QuestionCollection, prompt } from "inquirer"
+import slugify from "slugify"
 
 const questions: QuestionCollection = [
   {

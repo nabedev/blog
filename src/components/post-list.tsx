@@ -1,4 +1,4 @@
-import { Flex, Link } from "@adobe/react-spectrum"
+import { Flex, Link, Text } from "@adobe/react-spectrum"
 import { Link as GatsbyLink, PageProps } from "gatsby"
 import React from "react"
 
@@ -9,23 +9,17 @@ const PostList: React.FC<PageProps<GatsbyTypes.BlogIndexQuery>> = ({
     <Flex direction="column" gap="size-500">
       {data.allMdx.nodes.map(node => (
         <Flex key={node.id} direction="column" gap="size-100">
-          <div className="spectrum-Heading spectrum-Heading--sizeXS">
-            <Link isQuiet variant="secondary">
-              <GatsbyLink to={`/blog/${node.slug}`}>
-                {node.frontmatter.title}
-              </GatsbyLink>
-            </Link>
-          </div>
+          <Link variant="secondary">
+            <GatsbyLink to={`/blog/${node.slug}`}>
+              {node.frontmatter.title}
+            </GatsbyLink>
+          </Link>
 
-          <div className="spectrum-HelpText spectrum-HelpText--sizeM spectrum-HelpText--neutral is-disabled">
-            <div className="spectrum-HelpText-text">
-              {node.frontmatter.date}
-            </div>
-          </div>
+          <Text>{node.frontmatter.date}</Text>
 
           <Flex gap="size-100">
             {node.frontmatter.topics.map((topic, index) => (
-              <Link isQuiet key={index}>
+              <Link isQuiet key={index} variant="primary">
                 <GatsbyLink to={`/topics/${topic}`}>{topic}</GatsbyLink>
               </Link>
             ))}

@@ -26436,6 +26436,14 @@ type GraphQLSourceSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'id' | 'slug'>
+      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
+    )> } };
+
 type TopicQueryVariables = Exact<{
   topic: Maybe<Scalars['String']>;
 }>;
@@ -26456,18 +26464,24 @@ type BlogPageQuery = { readonly mdx: Maybe<(
     & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date'>> }
   )> };
 
-type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'id' | 'slug'>
-      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
-    )> } };
-
 type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type TopicIndexQuery = { readonly allMdx: Pick<MdxConnection, 'distinct'> };
+
+type ProductIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type ProductIndexQuery = { readonly allProductsYaml: { readonly nodes: ReadonlyArray<Pick<ProductsYaml, 'repository' | 'description' | 'id' | 'demo' | 'type'>> }, readonly github: { readonly viewer: { readonly repositories: { readonly edges: Maybe<ReadonlyArray<Maybe<{ readonly node: Maybe<(
+            Pick<GitHub_Repository, 'name' | 'url' | 'homepageUrl'>
+            & { readonly languages: Maybe<(
+              Pick<GitHub_LanguageConnection, 'totalSize'>
+              & { readonly edges: Maybe<ReadonlyArray<Maybe<(
+                Pick<GitHub_LanguageEdge, 'size'>
+                & { readonly node: Pick<GitHub_Language, 'name' | 'color'> }
+              )>>> }
+            )>, readonly repositoryTopics: { readonly nodes: Maybe<ReadonlyArray<Maybe<{ readonly topic: Pick<GitHub_Topic, 'name'> }>>> } }
+          )> }>>> } } } };
 
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 

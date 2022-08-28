@@ -1,12 +1,19 @@
+import { Flex, Heading, Link, Text } from "@adobe/react-spectrum"
 import { MDXProvider } from "@mdx-js/react"
-import { PageProps, graphql } from "gatsby"
+import { Link as GatsbyLink, PageProps, graphql } from "gatsby"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import Highlight, { defaultProps } from "prism-react-renderer"
 import dracula from "prism-react-renderer/themes/dracula"
 import React from "react"
 
 const components = {
-  a: props => <a {...props} />,
+  a: props => {
+    return (
+      <Link>
+        <a {...props} />
+      </Link>
+    )
+  },
   code: ({ children, className }) => {
     const language = className.replace(/language-/, "")
 
@@ -40,8 +47,9 @@ const components = {
 
 const BlogPost: React.FC<PageProps<GatsbyTypes.BlogPageQuery>> = ({ data }) => (
   <>
-    <h1>{data.mdx.frontmatter.title}</h1>
-    <p>{data.mdx.frontmatter.date}</p>
+    <Heading level={1}>{data.mdx.frontmatter.title}</Heading>
+    <Text>{data.mdx.frontmatter.date}</Text>
+
     <MDXProvider components={components}>
       <MDXRenderer>{data.mdx.body}</MDXRenderer>
     </MDXProvider>

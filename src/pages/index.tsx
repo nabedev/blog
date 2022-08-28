@@ -7,12 +7,13 @@ import React from "react"
 
 const IndexPage: React.FC<PageProps> = () => {
   return (
-    <Flex justifyContent="center" height="100vh">
+    <Flex minHeight="94vh">
       <Flex
         direction="column"
         alignItems="center"
         justifyContent="center"
         gap="size-100"
+        margin="auto"
       >
         <StaticImage
           src="../images/nabedev.png"
@@ -40,8 +41,8 @@ const IndexPage: React.FC<PageProps> = () => {
           <Link variant="secondary">
             <GatsbyLink to="/products">Products</GatsbyLink>
           </Link>
-          <Link isQuiet variant="secondary">
-            <a href="">
+          <Link variant="secondary">
+            <a href="https://github.com/nabedev/blog">
               GitHub <LinkOut size="XS" />
             </a>
           </Link>

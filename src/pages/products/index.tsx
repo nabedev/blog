@@ -1,18 +1,15 @@
 import {
-  Content,
   Divider,
   Flex,
   Heading,
   IllustratedMessage,
-  Image,
   Link as SpectrumLink,
   Text,
   View,
 } from "@adobe/react-spectrum"
 import NotFound from "@spectrum-icons/illustrations/NotFound"
 import LinkOut from "@spectrum-icons/workflow/LinkOut"
-import { Link, PageProps, graphql } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { PageProps, graphql } from "gatsby"
 import React from "react"
 
 const displayDemo = node => {
@@ -28,8 +25,7 @@ const displayDemo = node => {
     return <video width="100%" controls src={node.demo} />
   }
 
-  console.log(node.demo)
-  // return <img src={node.demo} alt="demo" />
+  return <img src={node.demo} alt="demo" style={{ width: '100%' }} />
 }
 
 const renderContent = (yaml, data) => {
@@ -40,10 +36,9 @@ const renderContent = (yaml, data) => {
   return (
     <View key={yaml.id}>
       <Flex
-        direction={{ S: "column", L: "row" }}
+        direction={{ base: "column", M: "row" }}
         justifyContent="space-between"
         gap="size-150"
-        alignItems="center"
       >
         <View flex="1">
           <Heading level={1}>{node.name}</Heading>
@@ -62,7 +57,7 @@ const renderContent = (yaml, data) => {
             )}
           </Flex>
           <Heading level={3}>言語</Heading>
-          <Flex direction="row" gap="size-100">
+          <Flex direction="row" gap="size-100" UNSAFE_style={{flexWrap: 'wrap'}}>
             {node.languages.edges.map((edge, index) => (
               // FIXME
               <Flex alignItems="center" gap="size-100" key={index}>
@@ -102,9 +97,8 @@ const renderContent = (yaml, data) => {
             {yaml.description}
           </Text>
         </View>
-        <View flex="1">{displayDemo(yaml)}</View>
+        <View flex="1" margin="auto">{displayDemo(yaml)}</View>
       </Flex>
-      {/* <Divider size="M" marginTop="size-1000" marginBottom="size-1000" /> */}
     </View>
   )
 }

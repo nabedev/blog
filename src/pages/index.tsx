@@ -21,7 +21,7 @@ const IndexPage: React.FC<PageProps> = () => {
           placeholder="blurred"
           width={200}
           height={200}
-          style={{
+          imgStyle={{
             borderRadius: "50%",
           }}
         />

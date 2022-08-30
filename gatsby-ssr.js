@@ -7,7 +7,7 @@ import "./src/styles/global.css"
 export const wrapPageElement = ({ element, props }) => {
   return (
     <SSRProvider>
-      <Provider theme={defaultTheme} locale="en-US">
+      <Provider theme={defaultTheme} locale="en-US" colorScheme="dark" scale="medium">
         <Layout {...props}>{element}</Layout>
       </Provider>
     </SSRProvider>

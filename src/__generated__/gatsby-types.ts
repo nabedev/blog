@@ -26438,14 +26438,6 @@ type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };
 
-type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'id' | 'slug'>
-      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
-    )> } };
-
 type BlogPageQueryVariables = Exact<{
   id: Maybe<Scalars['String']>;
 }>;
@@ -26455,6 +26447,14 @@ type BlogPageQuery = { readonly mdx: Maybe<(
     Pick<Mdx, 'body'>
     & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date'>> }
   )> };
+
+type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'id' | 'slug'>
+      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
+    )> } };
 
 type ProductIndexQueryVariables = Exact<{ [key: string]: never; }>;
 

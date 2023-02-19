@@ -26886,24 +26886,6 @@ type StaticImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type TopicQueryVariables = Exact<{
-  topic: Maybe<Scalars['String']>;
-}>;
-
-
-type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'id' | 'slug'>
-      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
-    )> } };
-
-type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
-      Pick<Mdx, 'id' | 'slug'>
-      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
-    )> } };
-
 type BlogPageQueryVariables = Exact<{
   id: Maybe<Scalars['String']>;
 }>;
@@ -26914,10 +26896,33 @@ type BlogPageQuery = { readonly mdx: Maybe<(
     & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date'>> }
   )> };
 
+type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'id' | 'slug'>
+      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
+    )> } };
+
+type TopicQueryVariables = Exact<{
+  topic: Maybe<Scalars['String']>;
+}>;
+
+
+type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+      Pick<Mdx, 'id' | 'slug'>
+      & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
+    )> } };
+
 type TopicIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 type TopicIndexQuery = { readonly allMdx: Pick<MdxConnection, 'distinct'> };
+
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 type ProductIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -26932,10 +26937,5 @@ type ProductIndexQuery = { readonly allProductsYaml: { readonly nodes: ReadonlyA
               )>>> }
             )>, readonly repositoryTopics: { readonly nodes: Maybe<ReadonlyArray<Maybe<{ readonly topic: Pick<GitHub_Topic, 'name'> }>>> } }
           )> }>>> } } } };
-
-type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type PagesQueryQuery = { readonly allSiteFunction: { readonly nodes: ReadonlyArray<Pick<SiteFunction, 'functionRoute'>> }, readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

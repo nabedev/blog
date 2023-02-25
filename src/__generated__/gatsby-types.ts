@@ -26886,12 +26886,10 @@ type StaticImageSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
-type TopicQueryVariables = Exact<{
-  topic: Maybe<Scalars['String']>;
-}>;
+type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
       Pick<Mdx, 'id' | 'slug'>
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };
@@ -26920,10 +26918,12 @@ type ProductIndexQuery = { readonly allProductsYaml: { readonly nodes: ReadonlyA
             )>, readonly repositoryTopics: { readonly nodes: Maybe<ReadonlyArray<Maybe<{ readonly topic: Pick<GitHub_Topic, 'name'> }>>> } }
           )> }>>> } } } };
 
-type BlogIndexQueryVariables = Exact<{ [key: string]: never; }>;
+type TopicQueryVariables = Exact<{
+  topic: Maybe<Scalars['String']>;
+}>;
 
 
-type BlogIndexQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
+type TopicQuery = { readonly allMdx: { readonly nodes: ReadonlyArray<(
       Pick<Mdx, 'id' | 'slug'>
       & { readonly frontmatter: Maybe<Pick<MdxFrontmatter, 'title' | 'date' | 'topics'>> }
     )> } };

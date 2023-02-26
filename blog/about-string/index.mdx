@@ -8,7 +8,9 @@
 
 "あ".length = 1 😀
 
-"🇾🇪".length = 14 !?
+"叱".length = 2 😨
+
+"🇾🇪".length = 14 ⁉️
 
 
 Unicode
@@ -26,3 +28,31 @@ UTF-16 JSの内部表現
 複数の Unicode コードポイントで表される絵文字がある
 コードポイント "0x1F468, 0x200D, 0x1F469, 0x200D, 0x1F467, 0x200D, 0x1F466"
 UTF-16で表現する "0x1F468, 0x200D, 0x1F469, 0x200D, 0x1F467, 0x200D, 0x1F466..." 
+
+https://blog.jxck.io/entries/2017-03-02/unicode-in-javascript.html
+https://qiita.com/bon127/items/491b25e90208188dafbd#%E3%82%B3%E3%83%BC%E3%83%89%E3%83%A6%E3%83%8B%E3%83%83%E3%83%88
+https://qiita.com/YusukeHirao/items/2f0fb8d5bbb981101be0#ii-i-%E3%82%B5%E3%83%AD%E3%82%B2%E3%83%BC%E3%83%88%E3%83%9A%E3%82%A2%E3%81%A8%E3%81%AF
+https://qiita.com/suin/items/3da4fb016728c024eaca
+
+
+聖書
+
+# Unicode
+全ての文字に振られたID
+"あ" ⇨ U+3042 ⇨ Code Point ⇨ 最大6桁の16進数で表される⇨32bitあれば表現できる
+
+# 文字コード
+Unicodeをどう扱うかのルール
+
+UTF-32 (Unicode transform format)
+そのままバイナリデータとして送れば
+32bitをひとつのかたまりとして置き換えていけば良い
+
+問題 は UTF-16 JSの内部表現
+16bitで収まらない文字が出てくる
+16bit * 2 で表す ⇨ サロゲートペア ⇨ .length はこの長さを数える
+
+絵文字シーケンス
+複数のUnicodeが割り当てられたもの
+コードポイント "0x1F468, 0x200D, 0x1F469, 0x200D, 0x1F467, 0x200D, 0x1F466"
+UTF-16で表現する "0xD83D, 0xDC68, 0x200D, 0xD83D, 0xDC69, 0x200D, 0xD83D, 0xDC67, ..." 
